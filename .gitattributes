@@ -1,8 +1,4 @@
+/Source_Pict filter=lfs diff=lfs merge=lfs -text
 /License_Plate_Chars_Recognize/train-saver filter=lfs diff=lfs merge=lfs -text
-Source_Pict filter=lfs diff=lfs merge=lfs -text
-Source_Pict/3.jpg filter=lfs diff=lfs merge=lfs -text
-Source_Pict/4.jpg filter=lfs diff=lfs merge=lfs -text
-Source_Pict/5.jpg filter=lfs diff=lfs merge=lfs -text
-Source_Pict/wu.jpg filter=lfs diff=lfs merge=lfs -text
-Source_Pict/1.jpg filter=lfs diff=lfs merge=lfs -text
-Source_Pict/2.jpg filter=lfs diff=lfs merge=lfs -text
+/License_Plate_Chars_Recognize/LPCR_DataSet/ filter=lfs diff=lfs merge=lfs -text
+/Image_Enhancement/IE_DataSet/ filter=lfs diff=lfs merge=lfs -text
