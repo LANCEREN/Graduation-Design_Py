@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainForm</class>
+ <widget class="QWidget" name="MainForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1035</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>16010140020 毕业设计 </string>
+  </property>
+  <widget class="QPushButton" name="BrowseButton">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>650</y>
+     <width>113</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="InputImgae_Viewlabel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>50</y>
+     <width>1008</width>
+     <height>567</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string> Show Input Image Here</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="margin">
+    <number>0</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPL_Viewlabel">
+   <property name="geometry">
+    <rect>
+     <x>1130</x>
+     <y>50</y>
+     <width>721</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>License_Plate_Localization View</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="IE_OCR_Viewlabel">
+   <property name="geometry">
+    <rect>
+     <x>1130</x>
+     <y>340</y>
+     <width>721</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>IE_OCR_View</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Province_label">
+   <property name="geometry">
+    <rect>
+     <x>1130</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Province</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Letter_label">
+   <property name="geometry">
+    <rect>
+     <x>1230</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Letter</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_1">
+   <property name="geometry">
+    <rect>
+     <x>1320</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit1</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_2">
+   <property name="geometry">
+    <rect>
+     <x>1410</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit2</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_3">
+   <property name="geometry">
+    <rect>
+     <x>1500</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit3</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_4">
+   <property name="geometry">
+    <rect>
+     <x>1590</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit4</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_5">
+   <property name="geometry">
+    <rect>
+     <x>1680</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit5</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="LPR_View_Digit_label_6">
+   <property name="geometry">
+    <rect>
+     <x>1770</x>
+     <y>510</y>
+     <width>80</width>
+     <height>100</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LPR_Digit</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>BrowseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainForm</receiver>
+   <slot>showButtonMethod()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1014</x>
+     <y>665</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1220</x>
+     <y>668</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>showButtonMethod()</slot>
+ </slots>
+</ui>
