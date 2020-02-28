@@ -3,6 +3,7 @@
 /__pycache__
 */__pycache__
 venv
+
 /License_Plate_Chars_Recognize/.idea/
 /License_Plate_Chars_Recognize/.vs/
 /License_Plate_Chars_Recognize/LPCR_DataSet/
@@ -10,3 +11,6 @@ venv
 /License_Plate_Chars_Recognize/LPCR_DataSet/train_images/
 /Image_Enhancement/IE_DataSet/
 /Source_Pict/
+
+/cd ~.pub
+/cd ~
