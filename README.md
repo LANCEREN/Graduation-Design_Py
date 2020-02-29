@@ -12,7 +12,9 @@
 
 ## Component
 ### Image Enhancement
-#### Dark Channel Prior
+#### - Dark Channel Prior
 ### License Plate Detection
+#### - YOLO
 ### Optical Chars Recognition
 ### Licnese Plate Recognition
+#### - CNN
