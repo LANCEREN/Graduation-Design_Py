@@ -11,6 +11,6 @@ Python part in Private graduation design project titled License Plate Detection 
 
 ## Component
 ### Image Enhancement
-### License Plate Location
+### License Plate Detection
 ### Optical Chars Recognition
 ### Licnese Plate Recognition
