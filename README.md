@@ -1,5 +1,8 @@
 # License Plate Detection and Recognition
-![language](https://img.shields.io/badge/language-Python%203-blue.svg)
+![](https://img.shields.io/badge/language-Python3-blue)
+<a href="https://github.com/YunYang1994/TensorFlow2.0-Examples/blob/master/LICENSE">
+   <img src="https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000"
+        alt="Awesome">
 
 Python part in Private graduation design project titled License Plate Detection and Recognition
 
