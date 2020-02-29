@@ -1,10 +1,6 @@
 # License Plate Detection and Recognition
 ![image](https://img.shields.io/badge/language-Python3-blue.svg)
-![](https://img.shields.io/badge/Zachary46-666-green.svg)
-<a href="https://github.com/LANCEREN/Graduation-Design_Py/blob/master/LICENSE">
-   <img src="https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000"
-        alt="Awesome">
-</a>
+[![](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/LANCEREN/Graduation-Design_Py/blob/master/LICENSE)
 
 Python part in Private graduation design project titled License Plate Detection and Recognition
 
