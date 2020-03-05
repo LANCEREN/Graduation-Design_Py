@@ -9,7 +9,6 @@
 - opencv 3.4
 - tensorflow 2.0
 - PIL 
-- 1
 
 ## Component
 ### Image Enhancement
