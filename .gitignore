@@ -1,19 +1,17 @@
-.idea
-.DS_Store
-/cd ~
-/cd ~.pub
-/__pycache__
-*/__pycache__
-/venv
+**/.vs
+**/.idea
+**/.DS_Store
+**/__pycache__
 
-/Source_Pict/
-/Image_Enhancement/IE_DataSet/
-/License_Plate_Chars_Recognize/.idea/
-/License_Plate_Chars_Recognize/.vs/
-/License_Plate_Chars_Recognize/LPCR_DataSet/
-/License_Plate_Chars_Recognize/train-saver/
-/License_Plate_Chars_Recognize/LPCR_DataSet/test_images/
-/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/
+cd ~
+cd ~.pub
+venv
+
+Source_Pict/
+Image_Enhancement/IE_DataSet/
+License_Plate_Chars_Recognize/LPCR_DataSet/
+
+
 
 
 
