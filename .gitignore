@@ -3,8 +3,6 @@
 **/.DS_Store
 **/__pycache__
 
-cd ~
-cd ~.pub
 venv
 
 Source_Pict/
