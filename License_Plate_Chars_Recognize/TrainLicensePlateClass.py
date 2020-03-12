@@ -10,7 +10,7 @@ import Global_Var
 class Train():
     # 训练器的父类
 
-    def __init__(self, TrainTargetNumber, Saver_Dir, Train_Dir, Val_Dir, TrainTarget,
+    def __init__(self, trainTargetNumber, Saver_Dir, Train_Dir, Val_Dir, TrainTarget,
                  WIDTH_Column= 32,
                  HEIGHT_Row = 40,
                  CHANNEL = 1,
@@ -30,7 +30,7 @@ class Train():
         self.CHANNEL = CHANNEL
         self.InputFormat = [-1, HEIGHT_Row, WIDTH_Column, CHANNEL]
         self.TrainTarget = TrainTarget
-        self.TrainTargetNumber = TrainTargetNumber
+        self.trainTargetNumber = trainTargetNumber
 
         self.batch_size = batch_size
         self.iterations = iterations
@@ -54,12 +54,12 @@ class Train():
 
     def LoadData(self):
         # 获取训练和评估图片总数
-        for i in range(0, self.TrainTargetNumber):
+        for i in range(0, self.trainTargetNumber):
             dir = self.Train_Dir  + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
                     self.train_count += 1
-        for i in range(0, self.TrainTargetNumber):
+        for i in range(0, self.trainTargetNumber):
             dir = self.Val_Dir + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
@@ -67,10 +67,10 @@ class Train():
 
         # 定义对应维数和各维长度的数组
         self.train_images = np.zeros((self.train_count, self.HEIGHT_Row, self.WIDTH_Column, self.CHANNEL), dtype=int)
-        self.train_labels = np.zeros((self.train_count, self.TrainTargetNumber), dtype=int)
+        self.train_labels = np.zeros((self.train_count, self.trainTargetNumber), dtype=int)
         # 定义对应维数和各维长度的数组
         self.val_images = np.zeros((self.val_count, self.HEIGHT_Row, self.WIDTH_Column, self.CHANNEL), dtype=int)
-        self.val_labels = np.zeros((self.val_count, self.TrainTargetNumber), dtype=int)
+        self.val_labels = np.zeros((self.val_count, self.trainTargetNumber), dtype=int)
 
         print(f"用于train的照片shape为{self.train_images.shape},"
               f"用于train的标签shape为{self.train_labels.shape},"
@@ -79,7 +79,7 @@ class Train():
 
         # 生成训练图片数据和标签
         index = 0
-        for i in range(0, self.TrainTargetNumber):
+        for i in range(0, self.trainTargetNumber):
             dir = self.Train_Dir  + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
@@ -100,7 +100,7 @@ class Train():
 
         # 生成评估测试的图片数据和标签
         index = 0
-        for i in range(0, self.TrainTargetNumber):
+        for i in range(0, self.trainTargetNumber):
             dir = self.Val_Dir + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
@@ -146,7 +146,7 @@ class Train():
 
         model.add(tf.keras.layers.Dropout(0.5))
 
-        model.add(tf.keras.layers.Dense(units=self.TrainTargetNumber, activation='softmax',
+        model.add(tf.keras.layers.Dense(units=self.trainTargetNumber, activation='softmax',
                                         kernel_initializer=tf.keras.initializers.TruncatedNormal(stddev=0.1),
                                         bias_initializer=tf.keras.initializers.Constant(0.1)))
 
@@ -189,7 +189,7 @@ class Train():
         ImgInput = np.array(img).reshape(self.InputFormat)
         model = tf.keras.models.load_model(self.Saver_Dir + self.Model_Name)
         result = model.predict(x = ImgInput)
-        for i in range(0,self.TrainTargetNumber):
+        for i in range(0,self.trainTargetNumber):
             if result[0][i] == 1.0:
                 PredictResult = self.TrainTarget[i]
                 break
@@ -198,10 +198,10 @@ class Train():
 class ProvinceTrain(Train):
     # 省份训练器
 
-    def __init__(self, TrainTargetNumber = 31,
-                 Saver_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/train-saver/province/",
-                 Train_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/chinese-characters/",
-                 Val_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/chinese-characters/",
+    def __init__(self, trainTargetNumber = 31,
+                 Saver_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/province/",
+                 Train_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/chinese-characters/",
+                 Val_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/chinese-characters/",
                  TrainTarget = ("京", "闽", "粤", "苏", "沪", "浙", "川", "鄂", "甘", "赣", "贵", "桂", "黑", "吉", "冀",
                                 "津", "晋", "辽", "鲁", "蒙", "宁", "青", "琼", "陕", "皖", "湘", "新", "渝", "豫", "云", "藏"),
                  WIDTH_Column = 32,
@@ -212,7 +212,7 @@ class ProvinceTrain(Train):
                  batch_size = 60,
                  iterations = 10,
                  Model_Name = "model.h5"):
-        super().__init__(TrainTargetNumber = TrainTargetNumber,
+        super().__init__(trainTargetNumber = trainTargetNumber,
                          Saver_Dir = Saver_Dir,
                          Train_Dir = Train_Dir,
                          Val_Dir = Val_Dir,
@@ -228,10 +228,10 @@ class ProvinceTrain(Train):
 class LettersTrain(Train):
     # 字母训练器
 
-    def __init__(self, TrainTargetNumber = 24,
-                 Saver_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/train-saver/letters/",
-                 Train_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/letters/",
-                 Val_Dir = Global_Var.Project_Path + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/letters/",
+    def __init__(self, trainTargetNumber = 24,
+                 Saver_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/letters/",
+                 Train_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/letters/",
+                 Val_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/letters/",
                  TrainTarget = ("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M",
                                 "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y","Z"),
                  WIDTH_Column = 32,
@@ -242,7 +242,7 @@ class LettersTrain(Train):
                  iterations = 10,
                  validation_split = 0.05,
                  Model_Name = "model.h5"):
-        super().__init__(TrainTargetNumber = TrainTargetNumber,
+        super().__init__(trainTargetNumber = trainTargetNumber,
                          Saver_Dir = Saver_Dir,
                          Train_Dir = Train_Dir,
                          Val_Dir = Val_Dir,
@@ -258,11 +258,11 @@ class LettersTrain(Train):
 class DigitsTrain(Train):
     # 字母与数字训练器
 
-    def __init__(self, TrainTargetNumber=34,
-                 Saver_Dir= Global_Var.Project_Path + "/License_Plate_Chars_Recognize/train-saver/digits/",
-                 Train_Dir= Global_Var.Project_Path + "/License_Plate_Chars_Recognize/"+
+    def __init__(self, trainTargetNumber=34,
+                 Saver_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/digits/",
+                 Train_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/"+
                            "LPCR_DataSet/train_images/training-set/",
-                 Val_Dir= Global_Var.Project_Path + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/",
+                 Val_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/",
                  TrainTarget=("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G",
                       "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"),
                  WIDTH_Column=32,
@@ -273,7 +273,7 @@ class DigitsTrain(Train):
                  iterations=10,
                  validation_split = 0.05,
                  Model_Name="model.h5"):
-        super().__init__(TrainTargetNumber=TrainTargetNumber,
+        super().__init__(trainTargetNumber=trainTargetNumber,
                          Saver_Dir=Saver_Dir,
                          Train_Dir=Train_Dir,
                          Val_Dir=Val_Dir,
