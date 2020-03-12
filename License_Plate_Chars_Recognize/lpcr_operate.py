@@ -1,6 +1,6 @@
 from License_Plate_Chars_Recognize import TrainLicensePlateClass
 
-def lpcr_operator():
+def Lpcr_Operator():
     """进行车牌识别License_Plate_Chars_Recognize"""
 
     license_num = ""
@@ -14,4 +14,4 @@ def lpcr_operator():
 
 
 if __name__ == "__main__":
-    lpcr_operator()
+    Lpcr_Operator()
