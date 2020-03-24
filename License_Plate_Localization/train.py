@@ -16,10 +16,10 @@ import time
 import shutil
 import numpy as np
 import tensorflow as tf
-import core.utils as utils
-from core.dataset import Dataset
-from core.yolov3 import YOLOv3, decode, compute_loss
-from core.config import cfg
+import License_Plate_Localization.core.utils as utils
+from License_Plate_Localization.core.dataset import Dataset
+from License_Plate_Localization.core.yolov3 import YOLOv3, decode, compute_loss
+from License_Plate_Localization.core.config import cfg
 
 trainset = Dataset('train')
 logdir = "./data/log"
@@ -86,5 +86,5 @@ def train_step(image_data, target):
 for epoch in range(cfg.TRAIN.EPOCHS):
     for image_data, target in trainset:
         train_step(image_data, target)
-    model.save_weights("./yolov3")
+    model.save_weights("./data/model/yolov3.h5")
 

@@ -1,9 +1,4 @@
 import os
-import cv2
-import numpy as np
-import shutil
-import random
-import argparse
 import Global_Var
 import xml.dom.minidom as dom
 
