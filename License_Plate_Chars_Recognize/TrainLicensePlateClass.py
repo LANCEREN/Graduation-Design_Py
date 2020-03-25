@@ -83,8 +83,8 @@ class Train():
             dir = self.Train_Dir  + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
-                    Fullfilename = dir + filename
-                    img = PIL.Image.open(Fullfilename)
+                    fullFileName = dir + filename
+                    img = PIL.Image.open(fullFileName)
                     self.train_images[index] = np.array(img).reshape(self.InputFormat)
                     self.train_labels[index][i] = 1
                     # WIDTH_Column = img.size[0]
@@ -104,8 +104,8 @@ class Train():
             dir = self.Val_Dir + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
-                    Fullfilename = dir + filename
-                    img = PIL.Image.open(Fullfilename)
+                    fullFileName = dir + filename
+                    img = PIL.Image.open(fullFileName)
                     self.val_images[index] = np.array(img).reshape(self.InputFormat)
                     self.val_labels[index][i] = 1
                     # WIDTH_Column = img.size[0]

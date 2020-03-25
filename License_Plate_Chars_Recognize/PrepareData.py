@@ -32,8 +32,8 @@ class PrepareData():
                     os.mkdir(SaveDir)
                 for rt, dirs, files in os.walk(InputDir):
                     for filename in files:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         newimg = img.resize((32, 40), PIL.Image.ANTIALIAS)
                         newimg = newimg.convert('L')
                         newimg.save(SaveDir + f"{filename}.png")
@@ -49,8 +49,8 @@ class PrepareData():
                     os.mkdir(SaveDir)
                 for rt, dirs, files in os.walk(InputDir):
                     for filename in files:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         newimg = img.resize((32, 40), PIL.Image.ANTIALIAS)
                         newimg = newimg.convert('L')
                         newimg.save(self.saverDirTrain + f"{j}/" + f"{filename}.png")
@@ -62,8 +62,8 @@ class PrepareData():
             for rt, dirs, files in os.walk(InputDir):
                 for filename in files:
                     if index % 3 == 0:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         img.save(self.saverDirTrain + "letters/" + f"{i}/" + f"{filename}.png")
                     index += 1
 
@@ -77,8 +77,8 @@ class PrepareData():
                     os.mkdir(SaveDir)
                 for rt, dirs, files in os.walk(InputDir):
                     for filename in files:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         newimg = img.resize((32, 40), PIL.Image.ANTIALIAS)
                         newimg = newimg.convert('L')
                         newimg.save(SaveDir + f"{filename}.png")
@@ -92,8 +92,8 @@ class PrepareData():
                 os.mkdir(SaveDir)
             for rt, dirs, files in os.walk(InputDir):
                 for filename in files:
-                    Fullfilename = InputDir + filename
-                    img = PIL.Image.open(Fullfilename)
+                    fullFileName = InputDir + filename
+                    img = PIL.Image.open(fullFileName)
                     newimg = img.resize((32, 40), PIL.Image.ANTIALIAS)
                     newimg = newimg.convert('L')
                     newimg.save(SaveDir + f"{filename}.png")
@@ -111,8 +111,8 @@ class PrepareData():
             for rt, dirs, files in os.walk(InputDir):
                 for filename in files:
                     if index % 9 == 0:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         img.save(self.saverDirVal + f"{i}/" + f"{filename}.png")
                     index += 1
 
@@ -126,8 +126,8 @@ class PrepareData():
             for rt, dirs, files in os.walk(InputDir):
                 for filename in files:
                     if index % 9 == 0:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         img.save(self.saverDirVal + "letters/" + f"{i}/" + f"{filename}.png")
                     index += 1
 
@@ -139,8 +139,8 @@ class PrepareData():
             for rt, dirs, files in os.walk(InputDir):
                 for filename in files:
                     if index % 9 == 0:
-                        Fullfilename = InputDir + filename
-                        img = PIL.Image.open(Fullfilename)
+                        fullFileName = InputDir + filename
+                        img = PIL.Image.open(fullFileName)
                         img.save(self.saverDirVal + "chinese-characters/" + f"{i}/" + f"{filename}.png")
                     index += 1
 
