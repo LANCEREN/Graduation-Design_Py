@@ -8,8 +8,8 @@ class PrepareData():
 
     def __init__(self):
 
-        self.saverDirTrain = Global_Var.projectPath + "/License_Plate_Chars_Recognize/" + "LPCR_DataSet/train_images/training-set/"
-        self.saverDirVal = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/"
+        self.saverDirTrain = Global_Var.projectPath + "/" + "License_Plate_Chars_Recognize/" + "LPCR_DataSet/train_images/training-set/"
+        self.saverDirVal = Global_Var.projectPath + "/" + "License_Plate_Chars_Recognize/" + "LPCR_DataSet/train_images/validation-set/"
         self.inputDirDigit = ["/Users/lanceren/Downloads/毕设实验数据/LPCR数据/训练字符识别模型数据/",
                               "/Users/lanceren/Downloads/毕设实验数据/tf_car_license_dataset/train_images/validation-set/"
             , "/Users/lanceren/Downloads/毕设实验数据/LPCR数据/car_charactes少/digit_letters/",

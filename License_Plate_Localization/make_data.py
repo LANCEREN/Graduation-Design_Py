@@ -112,7 +112,7 @@ def SelectFileFromCCPD():
 
 
 def CreateDotNames():
-    dotNamePath = "./data/classes/gd_detect.names"
+    dotNamePath = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/classes/gd_detect.names"
     if not os.path.exists(dotNamePath):
         with open(dotNamePath, "w+", encoding='utf-8') as f:
             f.writelines("Plate")
@@ -133,7 +133,7 @@ def CreateLabelTxt(mode="train"):
             dirs[:] = [d for d in dirs if not d[0] == '.']
             for filename in files:
                 fullFileName = rt + filename
-                content = Global_Var.projectPath + "/License_Plate_Localization/data/dataset/" + DealXMLFile(fullFileName) + os.linesep
+                content = Global_Var.projectPath + "/" + "License_Plate_Localization/data/dataset/" + DealXMLFile(fullFileName) + os.linesep
                 if mode == "train":
                     labelData.append(content)
                 else:
@@ -141,7 +141,7 @@ def CreateLabelTxt(mode="train"):
                         labelData.append(content)
                 labelNum += 1
 
-        labelDir = Global_Var.projectPath + "/License_Plate_Localization/" + "data/dataset/JPEGImages/ccpd_Normal/"
+        labelDir = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/JPEGImages/ccpd_Normal/"
         for rt, dirs, files in os.walk(labelDir):
             files = [f for f in files if not f[0] == '.']
             dirs[:] = [d for d in dirs if not d[0] == '.']
