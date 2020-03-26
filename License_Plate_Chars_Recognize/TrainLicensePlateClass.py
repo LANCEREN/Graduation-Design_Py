@@ -83,19 +83,10 @@ class Train():
             dir = self.Train_Dir  + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
-                    Fullfilename = dir + filename
-                    img = PIL.Image.open(Fullfilename)
+                    fullFileName = dir + filename
+                    img = PIL.Image.open(fullFileName)
                     self.train_images[index] = np.array(img).reshape(self.InputFormat)
                     self.train_labels[index][i] = 1
-                    # WIDTH_Column = img.size[0]
-                    # HEIGHT_Row = img.size[1]
-                    # for h in range(0, HEIGHT_Row):
-                    #     for w in range(0, WIDTH_Column):
-                    #         # 通过这样的处理，使数字的线条变细，有利于提高识别准确率
-                    #         if img.getpixel((w, h)) > 230:
-                    #             self.train_images[index][w + h * WIDTH_Column] = 0
-                    #         else:
-                    #             self.train_images[index][w + h * WIDTH_Column] = img.getpixel((w, h))
                     index += 1
 
         # 生成评估测试的图片数据和标签
@@ -104,19 +95,10 @@ class Train():
             dir = self.Val_Dir + f'{i}/'
             for rt, dirs, files in os.walk(dir):
                 for filename in files:
-                    Fullfilename = dir + filename
-                    img = PIL.Image.open(Fullfilename)
+                    fullFileName = dir + filename
+                    img = PIL.Image.open(fullFileName)
                     self.val_images[index] = np.array(img).reshape(self.InputFormat)
                     self.val_labels[index][i] = 1
-                    # WIDTH_Column = img.size[0]
-                    # HEIGHT_Row = img.size[1]
-                    # for h in range(0, HEIGHT_Row):
-                    #     for w in range(0, WIDTH_Column):
-                    #         # 通过这样的处理，使数字的线条变细，有利于提高识别准确率
-                    #         if img.getpixel((w, h)) > 230:
-                    #             self.val_images[index][w + h * WIDTH_Column] = 0
-                    #         else:
-                    #             self.val_images[index][w + h * WIDTH_Column] = 1
                     index += 1
 
     def Default_Model_Generator(self):
