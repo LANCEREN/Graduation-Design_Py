@@ -11,7 +11,8 @@
 #
 #================================================================
 
-import os
+import os,sys
+sys.path.append('/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation')
 import time
 import shutil
 import numpy as np
@@ -90,3 +91,5 @@ def trainModel():
             train_step(image_data, target)
         model.save_weights("./data/model/yolov3")
 
+if __name__ == "__main__":
+    trainModel()
