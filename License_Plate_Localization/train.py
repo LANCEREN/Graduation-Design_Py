@@ -89,7 +89,7 @@ def trainModel():
     for epoch in range(cfg.TRAIN.EPOCHS):
         for image_data, target in trainset:
             train_step(image_data, target)
-        model.save_weights("./data/model/yolov3")
+        model.save_weights(Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/model/yolov3")
 
 if __name__ == "__main__":
     trainModel()
