@@ -1,4 +1,5 @@
-import os
+import os,sys
+import shutil
 import time
 import numpy as np
 import tensorflow as tf
@@ -48,6 +49,11 @@ class Train():
         # 数据准备结束
         time_elapsed = time.time() - time_begin
         print("读取test和valid %d图片文件耗费时间：%d秒" % (self.train_count + self.val_count, time_elapsed))
+
+        # FIXME:
+        self.logdir = "./License_Plate_Chars_Recognize/data/log"
+        if os.path.exists(self.logdir): shutil.rmtree(self.logdir)
+        writer = tf.summary.create_file_writer(self.logdir)
 
         #生成缺省model
         self.Default_Model_Generator()
