@@ -1,3 +1,4 @@
+import os, sys
 import cv2
 import numpy as np
 
@@ -29,9 +30,9 @@ def Defog(m, r, eps, w, maxV1):                 # 输入rgb图像，值范围[0,
     '''计算大气遮罩图像V1和光照值A, V1 = 1-t/A'''
     V1 = np.min(m, 2)                           # 得到暗通道图像
     Dark_Channel = zmMinFilterGray(V1, 7)
-    cv2.imshow('20190708_Dark',Dark_Channel)    # 查看暗通道
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow('20190708_Dark',Dark_Channel)    # 查看暗通道
+    # cv2.waitKey(500)
+    # cv2.destroyAllWindows()
 
     V1 = guidedfilter(V1, Dark_Channel, r, eps)  # 使用引导滤波优化
     bins = 2000

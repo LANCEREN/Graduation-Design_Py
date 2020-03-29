@@ -5,12 +5,12 @@ def Lpcr_Operator():
 
     license_num = ""
 
-    P = TrainLicensePlateClass.ProvinceTrain(iterations=25)
-    P.TrainModel(P.Default_Model)
-    L = TrainLicensePlateClass.LettersTrain(iterations=25)
-    L.TrainModel(L.Default_Model)
-    D = TrainLicensePlateClass.DigitsTrain(iterations=25)
-    D.TrainModel(D.Default_Model)
+    # P = TrainLicensePlateClass.ProvinceTrain(iterations=25)
+    # P.TrainModel(P.Default_Model)
+    # L = TrainLicensePlateClass.LettersTrain(iterations=25)
+    # L.TrainModel(L.Default_Model)
+    # D = TrainLicensePlateClass.DigitsTrain(iterations=25)
+    # D.TrainModel(D.Default_Model)
 
 
 if __name__ == "__main__":
