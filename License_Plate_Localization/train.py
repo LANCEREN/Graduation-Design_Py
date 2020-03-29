@@ -11,12 +11,13 @@
 #
 #================================================================
 
-import os,sys
+
+import os, sys
 sys.path.append('/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation')
 import time
 import shutil
-import numpy as np
 import Global_Var
+import numpy as np
 import tensorflow as tf
 import License_Plate_Localization.core.utils as utils
 from License_Plate_Localization.core.dataset import Dataset

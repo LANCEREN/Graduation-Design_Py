@@ -11,7 +11,7 @@
 #
 #================================================================
 
-import tensorflow as tf
+
 import License_Plate_Localization.core.common as common
 
 

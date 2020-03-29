@@ -1,12 +1,13 @@
-import os,sys
+import os, sys
 import shutil
 import time
+import Global_Var
+import cv2 as cv
+import PIL
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import cv2 as cv
-import PIL
-import Global_Var
+
 
 class Train():
     # 训练器的父类

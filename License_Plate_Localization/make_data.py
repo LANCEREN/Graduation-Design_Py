@@ -1,4 +1,4 @@
-import os
+import os, sys
 import shutil
 import Global_Var
 import xml.dom.minidom as mnd
