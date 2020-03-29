@@ -11,12 +11,13 @@
 #
 #================================================================
 
-import cv2
-import os,sys
+
+import os, sys
 sys.path.append('/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation')
 import shutil
-import numpy as np
 import Global_Var
+import cv2
+import numpy as np
 import tensorflow as tf
 import License_Plate_Localization.core.utils as utils
 from License_Plate_Localization.core.config import cfg

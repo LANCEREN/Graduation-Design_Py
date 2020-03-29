@@ -13,6 +13,7 @@
 
 import tensorflow as tf
 
+
 class BatchNormalization(tf.keras.layers.BatchNormalization):
     """
     "Frozen state" and "inference mode" are two separate concepts.

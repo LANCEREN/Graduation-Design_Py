@@ -1,7 +1,7 @@
+import os, sys
+import Global_Var
 import PIL
 from PIL import Image
-import os
-import Global_Var
 
 
 class PrepareData():
