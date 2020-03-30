@@ -1,7 +1,7 @@
 import os, sys
 import shutil
 import time
-import Global_Var
+import global_var
 import cv2 as cv
 import PIL
 import numpy as np
@@ -188,9 +188,9 @@ class ProvinceTrain(Train):
     # 省份训练器
 
     def __init__(self, trainTargetNumber = 31,
-                 Saver_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/province/",
-                 Train_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/chinese-characters/",
-                 Val_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/chinese-characters/",
+                 Saver_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/train-saver/province/",
+                 Train_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/chinese-characters/",
+                 Val_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/chinese-characters/",
                  TrainTarget = ("京", "闽", "粤", "苏", "沪", "浙", "川", "鄂", "甘", "赣", "贵", "桂", "黑", "吉", "冀",
                                 "津", "晋", "辽", "鲁", "蒙", "宁", "青", "琼", "陕", "皖", "湘", "新", "渝", "豫", "云", "藏"),
                  WIDTH_Column = 32,
@@ -218,9 +218,9 @@ class LettersTrain(Train):
     # 字母训练器
 
     def __init__(self, trainTargetNumber = 24,
-                 Saver_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/letters/",
-                 Train_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/letters/",
-                 Val_Dir = Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/letters/",
+                 Saver_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/train-saver/letters/",
+                 Train_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/training-set/letters/",
+                 Val_Dir = global_var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/letters/",
                  TrainTarget = ("A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M",
                                 "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y","Z"),
                  WIDTH_Column = 32,
@@ -248,10 +248,10 @@ class DigitsTrain(Train):
     # 字母与数字训练器
 
     def __init__(self, trainTargetNumber=34,
-                 Saver_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/train-saver/digits/",
-                 Train_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/"+
+                 Saver_Dir= global_var.projectPath + "/License_Plate_Chars_Recognize/train-saver/digits/",
+                 Train_Dir= global_var.projectPath + "/License_Plate_Chars_Recognize/"+
                            "LPCR_DataSet/train_images/training-set/",
-                 Val_Dir= Global_Var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/",
+                 Val_Dir= global_var.projectPath + "/License_Plate_Chars_Recognize/LPCR_DataSet/train_images/validation-set/",
                  TrainTarget=("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G",
                       "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"),
                  WIDTH_Column=32,
