@@ -1,4 +1,4 @@
-from License_Plate_Chars_Recognize import TrainLicensePlateClass
+from License_Plate_Chars_Recognize import recognition_train
 
 def Lpcr_Operator():
     """进行车牌识别License_Plate_Chars_Recognize"""

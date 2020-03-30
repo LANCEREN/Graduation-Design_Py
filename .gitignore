@@ -5,18 +5,13 @@
 
 **/venv
 
-Image_Enhancement/IE_DataSet/
+Image_Enhancement/data/dataset/
 
-License_Plate_Chars_Recognize/LPCR_DataSet/
-License_Plate_Chars_Recognize/data/
+License_Plate_Chars_Recognize/data/dataset/
+/License_Plate_Chars_Recognize/data/log/
 
 License_Plate_Localization/data/dataset/
 License_Plate_Localization/data/detection/
 License_Plate_Localization/data/log/
 License_Plate_Localization/data/model/
-
-
-
-
-
-
+/License_Plate_Localization/data/annotations/

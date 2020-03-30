@@ -13,10 +13,9 @@
 
 
 import os, sys
-sys.path.append('/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation')
 import time
 import shutil
-import Global_Var
+import global_var
 import numpy as np
 import tensorflow as tf
 import License_Plate_Localization.core.utils as utils
@@ -91,7 +90,7 @@ def trainModel():
     for epoch in range(cfg.TRAIN.EPOCHS):
         for image_data, target in trainset:
             train_step(image_data, target)
-        model.save_weights(Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/model/yolov3")
+        model.save_weights(global_var.projectPath + "/" + "License_Plate_Localization/" + "data/model/yolov3")
 
 if __name__ == "__main__":
     trainModel()
