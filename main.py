@@ -1,4 +1,4 @@
-import os
+import os, sys
 from GUI import gui_operator
 from License_Plate_Chars_Recognize import lpcr_operate
 from Image_Enhancement import imgEnhance_operate

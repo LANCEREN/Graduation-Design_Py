@@ -1,6 +1,6 @@
 import os, sys
 import shutil
-import Global_Var
+import global_var
 import xml.dom.minidom as mnd
 
 
@@ -112,7 +112,7 @@ def SelectFileFromCCPD():
 
 
 def CreateDotNames():
-    dotNamePath = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/classes/gd_detect.names"
+    dotNamePath = global_var.projectPath + "/" + "License_Plate_Localization/" + "data/classes/gd_detect.names"
     if not os.path.exists(dotNamePath):
         with open(dotNamePath, "w+", encoding='utf-8') as f:
             f.writelines("Plate")
@@ -120,20 +120,20 @@ def CreateDotNames():
 
 
 def CreateLabelTxt(mode="train"):
-    LabelTxtPath = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/gd_detect_train.txt" if mode == "train" else \
-        Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/gd_detect_test.txt"
+    LabelTxtPath = global_var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/gd_detect_train.txt" if mode == "train" else \
+        global_var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/gd_detect_test.txt"
     if os.path.exists(LabelTxtPath):os.remove(LabelTxtPath)
     with open(LabelTxtPath, "w+", encoding='utf-8') as f:
         labelData = []
         labelNum = 0
 
-        labelDir = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/dataset_voc/Annotations/xml/"
+        labelDir = global_var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/dataset_voc/Annotations/xml/"
         for rt, dirs, files in os.walk(labelDir):
             files = [f for f in files if not f[0] == '.']
             dirs[:] = [d for d in dirs if not d[0] == '.']
             for filename in files:
                 fullFileName = rt + filename
-                content = Global_Var.projectPath + "/" + "License_Plate_Localization/data/dataset/" + DealXMLFile(fullFileName) + os.linesep
+                content = global_var.projectPath + "/" + "License_Plate_Localization/data/dataset/" + DealXMLFile(fullFileName) + os.linesep
                 if mode == "train":
                     labelData.append(content)
                 else:
@@ -141,7 +141,7 @@ def CreateLabelTxt(mode="train"):
                         labelData.append(content)
                 labelNum += 1
 
-        labelDir = Global_Var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/JPEGImages/ccpd_Normal/"
+        labelDir = global_var.projectPath + "/" + "License_Plate_Localization/" + "data/dataset/JPEGImages/ccpd_Normal/"
         for rt, dirs, files in os.walk(labelDir):
             files = [f for f in files if not f[0] == '.']
             dirs[:] = [d for d in dirs if not d[0] == '.']
@@ -160,6 +160,7 @@ def CreateLabelTxt(mode="train"):
         f.close()
 
 
-CreateDotNames()
-CreateLabelTxt("train")
-CreateLabelTxt("test")
+if __name__ == "__main__":
+    CreateDotNames()
+    CreateLabelTxt("train")
+    CreateLabelTxt("test")

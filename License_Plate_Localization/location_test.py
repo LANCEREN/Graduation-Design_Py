@@ -13,9 +13,8 @@
 
 
 import os, sys
-sys.path.append('/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation')
 import shutil
-import Global_Var
+import global_var
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -28,8 +27,8 @@ INPUT_SIZE   = 416
 NUM_CLASS    = len(utils.read_class_names(cfg.YOLO.CLASSES))
 CLASSES      = utils.read_class_names(cfg.YOLO.CLASSES)
 
-predicted_dir_path = Global_Var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/predicted/'
-ground_truth_dir_path = Global_Var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/ground-truth/'
+predicted_dir_path = global_var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/predicted/'
+ground_truth_dir_path = global_var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/ground-truth/'
 print(predicted_dir_path)
 if os.path.exists(predicted_dir_path): shutil.rmtree(predicted_dir_path)
 if os.path.exists(ground_truth_dir_path): shutil.rmtree(ground_truth_dir_path)
@@ -49,7 +48,7 @@ for i, fm in enumerate(feature_maps):
     bbox_tensors.append(bbox_tensor)
 
 model = tf.keras.Model(input_layer, bbox_tensors)
-model.load_weights(Global_Var.projectPath + "/" + "License_Plate_Localization/" +"data/model/yolov3")
+model.load_weights(global_var.projectPath + "/" + "License_Plate_Localization/" +"data/model/yolov3")
 
 with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
     for num, line in enumerate(annotation_file):
