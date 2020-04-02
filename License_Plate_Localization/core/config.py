@@ -11,7 +11,7 @@
 #
 #================================================================
 
-import global_var
+from global_var import globalVars
 from easydict import EasyDict as edict
 
 

@@ -1,7 +1,7 @@
 import os, sys
 import shutil
 import time
-import global_var
+from global_var import globalVars
 import cv2 as cv
 import PIL
 import numpy as np

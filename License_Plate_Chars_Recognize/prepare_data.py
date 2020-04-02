@@ -1,5 +1,5 @@
 import os, sys
-import global_var
+from global_var import globalVars
 import PIL
 from PIL import Image
 

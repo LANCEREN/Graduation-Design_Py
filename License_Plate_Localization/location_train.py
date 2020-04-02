@@ -15,7 +15,7 @@
 import os, sys
 import time
 import shutil
-import global_var
+from global_var import globalVars
 import numpy as np
 import tensorflow as tf
 import License_Plate_Localization.core.utils as utils
