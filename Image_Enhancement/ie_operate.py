@@ -1,14 +1,16 @@
 import cv2
-import global_var
+from pathlib2 import Path
+from global_var import globalVars
 from Image_Enhancement import image_enhance_process
 
 
 def Ie_Operator(i):
+    inputPath = globalVars.projectPath / Path('Image_Enhancement', 'data', 'dataset', f'{i}.jpg')
+    outputPath = globalVars.projectPath / Path('Image_Enhancement', 'data', 'dataset', f'{i}_.png')
 
-    m = image_enhance_process.deHaze(cv2.imread(global_var.projectPath + f'/Image_Enhancement/data/dataset/{i}.jpg') / 255.0) * 255
-    cv2.imwrite(global_var.projectPath + f'/Image_Enhancement/data/dataset/{i}_.png', m)
+    m = image_enhance_process.deHaze(cv2.imread(inputPath.__str__()) / 255.0) * 255
+    cv2.imwrite(outputPath.__str__(), m)
 
 
 if __name__ == "__main__":
-    for i in range(15):
-        Ie_Operator(i)
+    Ie_Operator(2)

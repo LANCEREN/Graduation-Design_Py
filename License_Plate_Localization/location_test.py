@@ -14,7 +14,7 @@
 
 import os, sys
 import shutil
-import global_var
+from global_var import globalVars
 import cv2
 import numpy as np
 import tensorflow as tf

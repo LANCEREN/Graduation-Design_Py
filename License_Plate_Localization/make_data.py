@@ -1,6 +1,6 @@
 import os, sys
 import shutil
-import global_var
+from global_var import globalVars
 import xml.dom.minidom as mnd
 
 
