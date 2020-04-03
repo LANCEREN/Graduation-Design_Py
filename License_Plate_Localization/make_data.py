@@ -1,5 +1,6 @@
 import os, sys
 import shutil
+from pathlib2 import Path
 from global_var import globalVars
 import xml.dom.minidom as mnd
 
