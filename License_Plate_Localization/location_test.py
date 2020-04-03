@@ -14,6 +14,7 @@
 
 import os, sys
 import shutil
+from pathlib2 import Path
 from global_var import globalVars
 import cv2
 import numpy as np
@@ -27,16 +28,17 @@ INPUT_SIZE   = 416
 NUM_CLASS    = len(utils.read_class_names(cfg.YOLO.CLASSES))
 CLASSES      = utils.read_class_names(cfg.YOLO.CLASSES)
 
-predicted_dir_path = global_var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/predicted/'
-ground_truth_dir_path = global_var.projectPath + "/" + "License_Plate_Localization/" + 'data/detection/mAP/ground-truth/'
-print(predicted_dir_path)
-if os.path.exists(predicted_dir_path): shutil.rmtree(predicted_dir_path)
-if os.path.exists(ground_truth_dir_path): shutil.rmtree(ground_truth_dir_path)
-if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH): shutil.rmtree(cfg.TEST.DECTECTED_IMAGE_PATH)
+predicted_dir_path = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'detection', 'mAP', 'predicted')
+ground_truth_dir_path = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'detection', 'mAP', 'ground-truth')
 
-os.mkdir(predicted_dir_path)
-os.mkdir(ground_truth_dir_path)
-os.mkdir(cfg.TEST.DECTECTED_IMAGE_PATH)
+print(predicted_dir_path)
+if os.path.exists(predicted_dir_path.__str__()): shutil.rmtree(predicted_dir_path.__str__())
+if os.path.exists(ground_truth_dir_path.__str__()): shutil.rmtree(ground_truth_dir_path.__str__())
+if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH.__str__()): shutil.rmtree(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
+
+os.mkdir(predicted_dir_path.__str__())
+os.mkdir(ground_truth_dir_path.__str__())
+os.mkdir(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
 
 # Build Model
 input_layer  = tf.keras.layers.Input([INPUT_SIZE, INPUT_SIZE, 3])
@@ -48,7 +50,8 @@ for i, fm in enumerate(feature_maps):
     bbox_tensors.append(bbox_tensor)
 
 model = tf.keras.Model(input_layer, bbox_tensors)
-model.load_weights(global_var.projectPath + "/" + "License_Plate_Localization/" +"data/model/yolov3")
+model_path = cfg.COMMON.MODEL_DIR_PATH / Path('yolov3')
+model.load_weights(model_path.__str__())
 
 with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
     for num, line in enumerate(annotation_file):
@@ -64,11 +67,10 @@ with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
             classes_gt=[]
         else:
             bboxes_gt, classes_gt = bbox_data_gt[:, :4], bbox_data_gt[:, 4]
-        ground_truth_path = os.path.join(ground_truth_dir_path, str(num) + '.txt')
-
+        ground_truth_path = ground_truth_dir_path / Path(f'{num}.txt')
         print('=> ground truth of %s:' % image_name)
         num_bbox_gt = len(bboxes_gt)
-        with open(ground_truth_path, 'w') as f:
+        with open(ground_truth_path.__str__(), 'w') as f:
             for i in range(num_bbox_gt):
                 class_name = CLASSES[classes_gt[i]]
                 xmin, ymin, xmax, ymax = list(map(str, bboxes_gt[i]))
@@ -76,7 +78,7 @@ with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
                 f.write(bbox_mess)
                 print('\t' + str(bbox_mess).strip())
         print('=> predict result of %s:' % image_name)
-        predict_result_path = os.path.join(predicted_dir_path, str(num) + '.txt')
+        predict_result_path = predicted_dir_path / Path(f'{num}.txt')
         # Predict Process
         image_size = image.shape[:2]
         image_data = utils.image_preporcess(np.copy(image), [INPUT_SIZE, INPUT_SIZE])
@@ -91,9 +93,10 @@ with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
 
         if cfg.TEST.DECTECTED_IMAGE_PATH is not None:
             image = utils.draw_bbox(image, bboxes)
-            cv2.imwrite(cfg.TEST.DECTECTED_IMAGE_PATH+image_name, image)
+            detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(image_name)
+            cv2.imwrite(detected_image_path.__str__(), image)
 
-        with open(predict_result_path, 'w') as f:
+        with open(predict_result_path.__str__(), 'w') as f:
             for bbox in bboxes:
                 coor = np.array(bbox[:4], dtype=np.int32)
                 score = bbox[4]

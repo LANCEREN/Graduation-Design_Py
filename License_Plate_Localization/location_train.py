@@ -15,7 +15,7 @@
 import os, sys
 import time
 import shutil
-from global_var import globalVars
+from pathlib2 import Path
 import numpy as np
 import tensorflow as tf
 import License_Plate_Localization.core.utils as utils
@@ -26,7 +26,6 @@ from License_Plate_Localization.core.config import cfg
 
 def trainModel():
     trainset = Dataset('train')
-    logdir = "./data/log"
     steps_per_epoch = len(trainset)
     global_steps = tf.Variable(1, trainable=False, dtype=tf.int64)
     warmup_steps = cfg.TRAIN.WARMUP_EPOCHS * steps_per_epoch
@@ -43,8 +42,8 @@ def trainModel():
 
     model = tf.keras.Model(input_tensor, output_tensors)
     optimizer = tf.keras.optimizers.Adam()
-    if os.path.exists(logdir): shutil.rmtree(logdir)
-    writer = tf.summary.create_file_writer(logdir)
+    if os.path.exists(cfg.COMMON.LOG_DIR_PATH.__str__()): shutil.rmtree(cfg.COMMON.LOG_DIR_PATH.__str__())
+    writer = tf.summary.create_file_writer(cfg.COMMON.LOG_DIR_PATH.__str__())
 
     def train_step(image_data, target):
         with tf.GradientTape() as tape:
@@ -90,7 +89,8 @@ def trainModel():
     for epoch in range(cfg.TRAIN.EPOCHS):
         for image_data, target in trainset:
             train_step(image_data, target)
-        model.save_weights(global_var.projectPath + "/" + "License_Plate_Localization/" + "data/model/yolov3")
+        model_path = cfg.COMMON.MODEL_DIR_PATH / Path('yolov3')
+        model.save_weights(model_path.__str__())
 
 if __name__ == "__main__":
     trainModel()
