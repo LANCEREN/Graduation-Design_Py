@@ -1,10 +1,11 @@
+import os, sys
 from pathlib2 import Path
 
 
 class fooPath(object):
 
     def __init__(self):
-        self.name = Path.cwd()
+        self.name = Path(os.path.split(os.path.realpath(__file__))[0])
 
     def __get__(self, instance, owner):
         return self.name
