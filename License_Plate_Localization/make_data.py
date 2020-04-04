@@ -116,37 +116,30 @@ def CreateDotNames():
     # create gd_detect.names
     dotNamePath = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'classes', 'gd_detect.names')
     if os.path.exists(dotNamePath.__str__()): shutil.rmtree(dotNamePath.__str__())
+    os.mkdir(dotNamePath.__str__())
     with open(dotNamePath.__str__(), "w+", encoding='utf-8') as f:
         f.writelines("Plate")
         f.close()
 
 
 def CreateLabelTxt():
-    def case1():
-        pass
+    def test1(labelTxtPath_key, labelTxtPath_value, annotationDirPathDict):
+        def test(mode, annotationDirPath_key, annotationDirPath_value, data):
+            def func(source):
+                pass
+            labelNum = 0
+            modeNum = 1 if mode == "train" else 10      # train全取，test十取一
+            for rt, dirs, files in os.walk(annotationDirPath_value.__str__()):
+                files = [f for f in files if not f[0] == '.']
+                dirs[:] = [d for d in dirs if not d[0] == '.']
+                for filename in files:
+                    fullFileName = Path(rt, filename)
+                    content = func(annotationDirPath_key)
+                    if labelNum % modeNum == 0:data.append(content)
+                    labelNum += 1
 
-    def case2():
-        pass
-
-    def default():
-        print("mode error!")
-
-    switch = {'unix': case1,
-              'dos': case2}
-
-    choice = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
-    switch.get(choice, default)()  # 执行对应的函数，如果没有就执行默认的函数
-
-    trainLabelTxtPath = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_train.txt')
-    testLabelTxtPath = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_test.txt')
-    if os.path.exists(trainLabelTxtPath.__str__()): os.remove(trainLabelTxtPath.__str__())
-    if os.path.exists(testLabelTxtPath.__str__()): os.remove(testLabelTxtPath.__str__())
-
-
-
-    def test1(labelTxtPath):
         def voc():
-            labelDir = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'dataset_voc', 'Annotations', 'xml')
+            labelDir =
             for rt, dirs, files in os.walk(labelDir):
                 files = [f for f in files if not f[0] == '.']
                 dirs[:] = [d for d in dirs if not d[0] == '.']
@@ -161,8 +154,9 @@ def CreateLabelTxt():
                             labelData.append(content)
                     labelNum += 1
             pass
+
         def ccpd():
-            labelDir = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages', 'ccpd_sample')
+            labelDir =
             for rt, dirs, files in os.walk(labelDir):
                 files = [f for f in files if not f[0] == '.']
                 dirs[:] = [d for d in dirs if not d[0] == '.']
@@ -178,12 +172,37 @@ def CreateLabelTxt():
                     labelNum += 1
             pass
 
-        with open(labelTxtPath.__str__(), "w+", encoding='utf-8') as f:
-            labelData = []
-            labelNum = 0
-
+        labelData = []
+        for key, value in annotationDirPathDict.iteritems():
+            test(labelTxtPath_key, key, value, labelData)
+        if os.path.exists(labelTxtPath_value.__str__()): os.remove(labelTxtPath_value.__str__())
+        os.mkdir(labelTxtPath_value.__str__())
+        with open(labelTxtPath_value.__str__(), "w+", encoding='utf-8') as f:
             f.writelines(labelData)
             f.close()
+
+    def case1():
+        pass
+
+    def case2():
+        pass
+
+    def default():
+        print("mode error!")
+
+    switch = {'unix': case1,
+              'dos': case2}
+
+    choice = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
+    switch.get(choice, default)()  # 执行对应的函数，如果没有就执行默认的函数
+
+    annotationDirPath = {"labelMe": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'dataset_voc', 'Annotations', 'xml'),
+                         "ccpd": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages', 'ccpd_sample')}
+    labelTxtPath = {"train": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_train.txt'),
+                    "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_test.txt')}
+
+    for key, value in labelTxtPath.iteritems():
+        test1(key, value, annotationDirPath)
 
 
 if __name__ == "__main__":
