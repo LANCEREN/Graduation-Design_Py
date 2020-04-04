@@ -62,7 +62,7 @@ class CCPDNameParams():
 
 
 def SelectFileFromCCPD():
-    ccpdPath = "/Users/lanceren/Downloads/GD_Dataset/Raw_Data/2019/CCPD2019/"
+    ccpdPath = Path("/Users/lanceren/Downloads/GD_Dataset/Raw_Data/2019/CCPD2019")
     targetFolder = "/Users/lanceren/Desktop/CCPD_Picts/"
     targetFolder_Normal = "/Users/lanceren/Desktop/CCPD_Picts/Normal/"
     targetFolder_SpecialCar = "/Users/lanceren/Desktop/CCPD_Picts/SpecialCar/"
