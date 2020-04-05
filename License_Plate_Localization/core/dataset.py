@@ -24,7 +24,7 @@ from License_Plate_Localization.core.config import cfg
 class Dataset(object):
     """implement Dataset here"""
     def __init__(self, dataset_type):
-        self.annot_path  = cfg.TRAIN.ANNOT_PATH if dataset_type == 'train' else cfg.TEST.ANNOT_PATH
+        self.annot_path  = cfg.TRAIN.ANNOT_PATH.__str__() if dataset_type == 'train' else cfg.TEST.ANNOT_PATH.__str__()
         self.input_sizes = cfg.TRAIN.INPUT_SIZE if dataset_type == 'train' else cfg.TEST.INPUT_SIZE
         self.batch_size  = cfg.TRAIN.BATCH_SIZE if dataset_type == 'train' else cfg.TEST.BATCH_SIZE
         self.data_aug    = cfg.TRAIN.DATA_AUG   if dataset_type == 'train' else cfg.TEST.DATA_AUG
