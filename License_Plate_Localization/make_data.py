@@ -18,7 +18,8 @@ def DealXMLFile(filePath):
     height = size.getElementsByTagName("height")[0]
     width = size.getElementsByTagName("width")[0]
     depth = size.getElementsByTagName("depth")[0]
-    content = folder.childNodes[0].data + "/" + filename.childNodes[0].data + " "
+    content = (globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', folder.childNodes[0].data,
+                                             filename.childNodes[0].data)).__str__() + " "
 
     # object 元素
     objects = rootNode.getElementsByTagName("object")
@@ -63,47 +64,47 @@ class CCPDNameParams():
 
 def SelectFileFromCCPD():
     ccpdPath = Path("/Users/lanceren/Downloads/GD_Dataset/Raw_Data/2019/CCPD2019")
-    targetFolder = "/Users/lanceren/Desktop/CCPD_Picts/"
-    targetFolder_Normal = "/Users/lanceren/Desktop/CCPD_Picts/Normal/"
-    targetFolder_SpecialCar = "/Users/lanceren/Desktop/CCPD_Picts/SpecialCar/"
-    targetFolder_Weather = "/Users/lanceren/Desktop/CCPD_Picts/Weather/"
+    targetFolder = Path("/Users/lanceren/Desktop/CCPD_Picts/")
+    targetFolder_Normal = targetFolder / Path('Normal')
+    targetFolder_SpecialCar = targetFolder / Path('SpecialCar')
+    targetFolder_Weather = targetFolder / Path('Weather')
 
-    if os.path.exists(targetFolder): shutil.rmtree(targetFolder)
-    os.mkdir(targetFolder)
-    os.mkdir(targetFolder_Normal)
-    os.mkdir(targetFolder_SpecialCar)
-    os.mkdir(targetFolder_Weather)
+    if os.path.exists(targetFolder.__str__()): shutil.rmtree(targetFolder.__str__())
+    os.mkdir(targetFolder.__str__())
+    os.mkdir(targetFolder_Normal.__str__())
+    os.mkdir(targetFolder_SpecialCar.__str__())
+    os.mkdir(targetFolder_Weather.__str__())
 
-    if os.path.exists(ccpdPath):
+    if os.path.exists(ccpdPath.__str__()):
         totalCount = 0
         standCount = 0
         specialCarCount = 0
         newPowerCarCount = 0
         weatherCount = 0
-        for rt, dirs, files in os.walk(ccpdPath):
+        for rt, dirs, files in os.walk(ccpdPath.__str__()):
             files = [f for f in files if not f[0] == '.']
             dirs[:] = [d for d in dirs if not d[0] == '.']
-            if rt == ccpdPath + "ccpd_np":
+            if rt == (ccpdPath / Path('ccpd_np')).__str__():
                 continue
 
             for filename in files:
                 totalCount += 1
-                fullFileName = rt + "/" + filename
+                fullFileName = Path(rt, filename)
                 ccpdName = CCPDNameParams(filename)
 
                 if ccpdName.horizon <= 0 and ccpdName.vertical <= 0 and ccpdName.light >= 100 and ccpdName.blur >= 100:
                     standCount += 1
-                    shutil.copy(fullFileName, targetFolder_Normal)
+                    shutil.copy(fullFileName.__str__(), targetFolder_Normal)
                 if ccpdName.province >= 31:
                     specialCarCount += 1
-                    shutil.copy(fullFileName, targetFolder_SpecialCar)
+                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
                 if ccpdName.index_of_low.count == 12:
                     newPowerCarCount += 1
-                    shutil.copy(fullFileName, targetFolder_SpecialCar)
-                if rt == ccpdPath + "ccpd_weather":
+                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
+                if rt == (ccpdPath / Path('ccpd_weather')).__str__():
                     if ccpdName.horizon <= 2 and ccpdName.vertical <= 2 and ccpdName.blur <= 15:
                         weatherCount += 1
-                        shutil.copy(fullFileName, targetFolder_Weather)
+                        shutil.copy(fullFileName.__str__(), targetFolder_Weather)
 
         print("new power : ", newPowerCarCount)
         print("specialCar : ", specialCarCount)
@@ -123,88 +124,57 @@ def CreateDotNames():
 
 
 def CreateLabelTxt():
-    def test1(labelTxtPath_key, labelTxtPath_value, annotationDirPathDict):
-        def test(mode, annotationDirPath_key, annotationDirPath_value, data):
-            def func(source):
-                pass
+    def generateLabelTxtInMode(labelTxtPath_key, labelTxtPath_value, annotationDirPathDict):
+        def generateLabelTxtBySource(mode, annotationDirPath_key, annotationDirPath_value, data):
+            def generateContent(source, fullFilePath):
+                def case1():
+                    return DealXMLFile(fullFilePath.__str__())
+
+                def case2():
+                    ccpdName = CCPDNameParams(fullFilePath.name)
+                    return fullFilePath.__str__() + " " + ccpdName.CCPDNameToLabelProcess()
+
+                def default():
+                    print("mode error!")
+
+                switch = {'labelMe': case1,
+                          'ccpd': case2}
+                choice = source  # 获取选择
+                content = switch.get(choice, default)() + os.linesep  # 执行对应的函数，如果没有就执行默认的函数
+                return content
+
             labelNum = 0
-            modeNum = 1 if mode == "train" else 10      # train全取，test十取一
+            modeNum = 1 if mode == "train" else 10  # train全取，test十取一
             for rt, dirs, files in os.walk(annotationDirPath_value.__str__()):
                 files = [f for f in files if not f[0] == '.']
                 dirs[:] = [d for d in dirs if not d[0] == '.']
                 for filename in files:
                     fullFileName = Path(rt, filename)
-                    content = func(annotationDirPath_key)
-                    if labelNum % modeNum == 0:data.append(content)
+                    content = generateContent(annotationDirPath_key, fullFileName)
+                    if labelNum % modeNum == 0: data.append(content)
                     labelNum += 1
-
-        def voc():
-            labelDir =
-            for rt, dirs, files in os.walk(labelDir):
-                files = [f for f in files if not f[0] == '.']
-                dirs[:] = [d for d in dirs if not d[0] == '.']
-                for filename in files:
-                    fullFileName = rt + filename
-                    content = global_var.projectPath + "/" + "License_Plate_Localization/data/dataset/" + DealXMLFile(
-                        fullFileName) + os.linesep
-                    if mode == "train":
-                        labelData.append(content)
-                    else:
-                        if labelNum % 10 == 0:
-                            labelData.append(content)
-                    labelNum += 1
-            pass
-
-        def ccpd():
-            labelDir =
-            for rt, dirs, files in os.walk(labelDir):
-                files = [f for f in files if not f[0] == '.']
-                dirs[:] = [d for d in dirs if not d[0] == '.']
-                for filename in files:
-                    fullFileName = rt + filename
-                    ccpdName = CCPDNameParams(filename)
-                    content = fullFileName + " " + ccpdName.CCPDNameToLabelProcess() + os.linesep
-                    if mode == "train":
-                        labelData.append(content)
-                    else:
-                        if labelNum % 10 == 0:
-                            labelData.append(content)
-                    labelNum += 1
-            pass
 
         labelData = []
         for key, value in annotationDirPathDict.iteritems():
-            test(labelTxtPath_key, key, value, labelData)
+            generateLabelTxtBySource(labelTxtPath_key, key, value, labelData)
         if os.path.exists(labelTxtPath_value.__str__()): os.remove(labelTxtPath_value.__str__())
-        os.mkdir(labelTxtPath_value.__str__())
         with open(labelTxtPath_value.__str__(), "w+", encoding='utf-8') as f:
             f.writelines(labelData)
             f.close()
 
-    def case1():
-        pass
-
-    def case2():
-        pass
-
-    def default():
-        print("mode error!")
-
-    switch = {'unix': case1,
-              'dos': case2}
-
-    choice = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
-    switch.get(choice, default)()  # 执行对应的函数，如果没有就执行默认的函数
-
-    annotationDirPath = {"labelMe": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'dataset_voc', 'Annotations', 'xml'),
-                         "ccpd": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages', 'ccpd_sample')}
-    labelTxtPath = {"train": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_train.txt'),
-                    "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{choice}', 'gd_detect_test.txt')}
+    operatingSystem = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
+    annotationDirPath = {
+        "labelMe": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'annotations', 'xml'),
+        "ccpd": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages',
+                                              'ccpd_sample')}
+    labelTxtPath = {
+        "train": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
+                                               'gd_detect_train.txt'),
+        "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
+                                              'gd_detect_test.txt')}
 
     for key, value in labelTxtPath.iteritems():
-        test1(key, value, annotationDirPath)
-
+        generateLabelTxtInMode(key, value, annotationDirPath)
 
 if __name__ == "__main__":
     CreateDotNames()
-

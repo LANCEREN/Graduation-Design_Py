@@ -53,7 +53,7 @@ model = tf.keras.Model(input_layer, bbox_tensors)
 model_path = cfg.COMMON.MODEL_DIR_PATH / Path('yolov3')
 model.load_weights(model_path.__str__())
 
-with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
+with open(cfg.TEST.ANNOT_PATH.__str__(), 'r') as annotation_file:
     for num, line in enumerate(annotation_file):
         annotation = line.strip().split()
         image_path = annotation[0]
@@ -91,7 +91,7 @@ with open(cfg.TEST.ANNOT_PATH, 'r') as annotation_file:
         bboxes = utils.nms(bboxes, cfg.TEST.IOU_THRESHOLD, method='nms')
 
 
-        if cfg.TEST.DECTECTED_IMAGE_PATH is not None:
+        if cfg.TEST.DECTECTED_IMAGE_PATH.__str__() is not None:
             image = utils.draw_bbox(image, bboxes)
             detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(image_name)
             cv2.imwrite(detected_image_path.__str__(), image)
