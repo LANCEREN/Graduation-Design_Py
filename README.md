@@ -13,8 +13,9 @@
 ## Component
 ### Image Enhancement
 #### - Dark Channel Prior
-### License Plate Detection
+### License Plate Localization
 #### - YOLO
 ### Optical Chars Recognition
 ### Licnese Plate Recognition
 #### - CNN
+### Licnese Plate Color Recognition
