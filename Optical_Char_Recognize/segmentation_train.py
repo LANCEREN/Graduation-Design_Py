@@ -105,10 +105,12 @@ K.set_image_dim_ordering('tf')
 
 # import skimage.util
 
+
 def transfrom( image):
     if np.random.random() > 0.5:
         image = cv2.equalizeHist(image)
     return image
+
 
 def Getmodel_tensorflow_light(nb_classes):
     # nb_classes = len(charset)
@@ -145,6 +147,7 @@ def Getmodel_tensorflow_light(nb_classes):
                   metrics=['accuracy'])
     return model
 
+
 def Getmodel_tensorflow_normal(nb_classes):
     # nb_classes = len(charset)
     img_rows, img_cols = 23, 23
@@ -172,9 +175,8 @@ def Getmodel_tensorflow_normal(nb_classes):
                   metrics=['accuracy'])
     return model
 
+
 def TrainingWithGenerator():
-
-
     model = Getmodel_tensorflow_normal(3)
     # set = Genernate(100,char_set)
     BatchSize = 72*100
@@ -185,6 +187,7 @@ def TrainingWithGenerator():
     model_name = "char_judgement.h5"
     model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
     model.save(model_path.__str__())
+
 
 if __name__ == "__main__":
     TrainingWithGenerator()
