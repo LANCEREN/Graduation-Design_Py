@@ -1,22 +1,18 @@
 #coding=utf-8
-import cv2
+import os
 import cv2
 from PIL import Image,ImageDraw,ImageFont
 import numpy as np
+from pathlib2 import Path
+from Optical_Char_Recognize.core.config import cfg
 
 
 char_set = u"0123456789QWERTYUPASDFGHJKLZXCVBNM"
 
 
-import os
-
-f = file("config.txt","r")
-
-T_folder = f.readline().strip()
-F_folder = f.readline().strip()
-CH_folder = f.readline().strip()
-
-print T_folder,F_folder,CH_folder
+T_folder = cfg.COMMON.T_DIR_PATH.__str__()
+F_folder = cfg.COMMON.F_DIR_PATH.__str__()
+CH_folder = cfg.COMMON.CH_DIR_PATH.__str__()
 
 
 list_T = []
@@ -47,7 +43,7 @@ if __name__ == "__main__":
 
     print(len(list_T),len(list_F),len(list_CH))
     if len(list_T) == 0 or len(list_CH)==0 or len(list_F)==0:
-        raise "can't find files. please check your folder path."
+        raise Exception("can't find files. please check your folder path.")
 
 
 
@@ -73,7 +69,7 @@ def Genernator(batchSize):
         X = []
         Y = []
 
-        for i in xrange(batchSize):
+        for i in range(batchSize):
             # print pickone(list_T)
             r = np.random.random()
             if r>0.6:
@@ -99,15 +95,15 @@ def Genernator(batchSize):
 
 
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Convolution2D, MaxPooling2D
-from keras.optimizers import SGD
-from keras import backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
+from tensorflow.keras.layers import Convolution2D, MaxPooling2D
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras import backend as K
 
 K.set_image_dim_ordering('tf')
 
-import skimage.util
+# import skimage.util
 
 def transfrom( image):
     if np.random.random() > 0.5:
@@ -186,7 +182,9 @@ def TrainingWithGenerator():
     #     model.load_weights("char_judgement.h5")
 
     model.fit_generator(generator=Genernator(128),samples_per_epoch=BatchSize,nb_epoch=30)
-    model.save("char_judgement.h5")
+    model_name = "char_judgement.h5"
+    model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+    model.save(model_path.__str__())
 
 if __name__ == "__main__":
     TrainingWithGenerator()

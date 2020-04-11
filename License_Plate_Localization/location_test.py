@@ -50,7 +50,8 @@ for i, fm in enumerate(feature_maps):
     bbox_tensors.append(bbox_tensor)
 
 model = tf.keras.Model(input_layer, bbox_tensors)
-model_path = cfg.COMMON.MODEL_DIR_PATH / Path('yolov3')
+model_name = "yolov3"
+model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
 model.load_weights(model_path.__str__())
 
 with open(cfg.TEST.ANNOT_PATH.__str__(), 'r') as annotation_file:

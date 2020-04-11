@@ -1,9 +1,11 @@
 # coding=utf-8
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPool2D
-from keras.optimizers import SGD
-from keras import backend as K
+from License_Plate_Color_Recognize.core.config import cfg
+from pathlib2 import Path
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
+from tensorflow.keras.layers import Conv2D, MaxPool2D
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras import backend as K
 
 K.set_image_dim_ordering('tf')
 
@@ -46,8 +48,11 @@ def Getmodel_tensorflow(nb_classes):
 
 
 model = Getmodel_tensorflow(5)
-model.load_weights("./model/plate_type.h5")
-model.save("./model/plate_type.h5")
+
+model_name = "plate_type.h5"
+model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+model.load_weights(model_path.__str__())
+model.save(model_path.__str__())
 
 
 def SimplePredict(image):
