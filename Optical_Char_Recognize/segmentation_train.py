@@ -3,6 +3,7 @@ import os
 import cv2
 from PIL import Image,ImageDraw,ImageFont
 import numpy as np
+from pathlib2 import Path
 from Optical_Char_Recognize.core.config import cfg
 
 
@@ -181,7 +182,9 @@ def TrainingWithGenerator():
     #     model.load_weights("char_judgement.h5")
 
     model.fit_generator(generator=Genernator(128),samples_per_epoch=BatchSize,nb_epoch=30)
-    model.save("char_judgement.h5")
+    model_name = "char_judgement.h5"
+    model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+    model.save(model_path.__str__())
 
 if __name__ == "__main__":
     TrainingWithGenerator()

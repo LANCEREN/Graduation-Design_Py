@@ -89,7 +89,8 @@ def trainModel():
     for epoch in range(cfg.TRAIN.EPOCHS):
         for image_data, target in trainset:
             train_step(image_data, target)
-        model_path = cfg.COMMON.MODEL_DIR_PATH / Path('yolov3')
+        model_name = "yolov3"
+        model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
         model.save_weights(model_path.__str__())
 
 if __name__ == "__main__":
