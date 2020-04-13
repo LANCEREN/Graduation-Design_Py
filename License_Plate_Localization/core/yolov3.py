@@ -19,8 +19,8 @@ import License_Plate_Localization.core.backbone as backbone
 from License_Plate_Localization.core.config import cfg
 
 
-NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES))
-ANCHORS         = utils.get_anchors(cfg.YOLO.ANCHORS)
+NUM_CLASS       = len(utils.read_class_names(cfg.YOLO.CLASSES.__str__()))
+ANCHORS         = utils.get_anchors(cfg.YOLO.ANCHORS.__str__())
 STRIDES         = np.array(cfg.YOLO.STRIDES)
 IOU_LOSS_THRESH = cfg.YOLO.IOU_LOSS_THRESH
 
