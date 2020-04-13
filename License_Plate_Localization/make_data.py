@@ -1,7 +1,8 @@
-import os, platform
+import os
 import shutil
 from pathlib2 import Path
 from global_var import globalVars
+from License_Plate_Localization.core.config import cfg
 import xml.dom.minidom as mnd
 
 
@@ -86,25 +87,26 @@ def SelectFileFromCCPD():
             dirs[:] = [d for d in dirs if not d[0] == '.']
             if rt == (ccpdPath / Path('ccpd_np')).__str__():
                 continue
+            if rt == (ccpdPath / Path('ccpd_base')).__str__():
+                for filename in files:
+                    totalCount += 1
+                    fullFileName = Path(rt, filename)
+                    ccpdName = CCPDNameParams(filename)
 
-            for filename in files:
-                totalCount += 1
-                fullFileName = Path(rt, filename)
-                ccpdName = CCPDNameParams(filename)
-
-                if ccpdName.horizon <= 0 and ccpdName.vertical <= 0 and ccpdName.light >= 100 and ccpdName.blur >= 100:
-                    standCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_Normal)
-                if ccpdName.province >= 31:
-                    specialCarCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
-                if ccpdName.index_of_low.count == 12:
-                    newPowerCarCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
-                if rt == (ccpdPath / Path('ccpd_weather')).__str__():
-                    if ccpdName.horizon <= 2 and ccpdName.vertical <= 2 and ccpdName.blur <= 15:
-                        weatherCount += 1
-                        shutil.copy(fullFileName.__str__(), targetFolder_Weather)
+                    if ccpdName.horizon <= 10 and ccpdName.vertical <= 10 and ccpdName.light >= 100 and ccpdName.blur >= 100:
+                        standCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_Normal)
+                    if ccpdName.province >= 31:
+                        specialCarCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
+                    if ccpdName.index_of_low.count == 12:
+                        newPowerCarCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
+            if rt == (ccpdPath / Path('ccpd_weather')).__str__():
+                continue
+                if ccpdName.horizon <= 2 and ccpdName.vertical <= 2 and ccpdName.blur <= 15:
+                    weatherCount += 1
+                    shutil.copy(fullFileName.__str__(), targetFolder_Weather)
 
         print("new power : ", newPowerCarCount)
         print("specialCar : ", specialCarCount)
@@ -115,7 +117,7 @@ def SelectFileFromCCPD():
 
 def CreateDotNames():
     # create gd_detect.names
-    dotNamePath = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'classes', 'gd_detect.names')
+    dotNamePath = cfg.YOLO.CLASSES
     if os.path.exists(dotNamePath.__str__()): shutil.rmtree(dotNamePath.__str__())
     os.mkdir(dotNamePath.__str__())
     with open(dotNamePath.__str__(), "w+", encoding='utf-8') as f:
@@ -155,26 +157,25 @@ def CreateLabelTxt():
                     labelNum += 1
 
         labelData = []
-        for key, value in annotationDirPathDict.iteritems():
+        for key, value in annotationDirPathDict.items():
             generateLabelTxtBySource(labelTxtPath_key, key, value, labelData)
         if os.path.exists(labelTxtPath_value.__str__()): os.remove(labelTxtPath_value.__str__())
         with open(labelTxtPath_value.__str__(), "w+", encoding='utf-8') as f:
             f.writelines(labelData)
             f.close()
 
-    operatingSystem = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
     annotationDirPath = {
         "labelMe": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'annotations', 'xml'),
         "ccpd": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages',
                                               'ccpd_sample')}
     labelTxtPath = {
-        "train": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
-                                               'gd_detect_train.txt'),
-        "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
-                                              'gd_detect_test.txt')}
+        "train": cfg.TRAIN.ANNOT_PATH,
+        "test": cfg.TEST.ANNOT_PATH}
 
-    for key, value in labelTxtPath.iteritems():
+    for key, value in labelTxtPath.items():
         generateLabelTxtInMode(key, value, annotationDirPath)
 
 if __name__ == "__main__":
-    CreateDotNames()
+    # SelectFileFromCCPD()
+    # CreateDotNames()
+    CreateLabelTxt()

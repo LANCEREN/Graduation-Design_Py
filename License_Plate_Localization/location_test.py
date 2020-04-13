@@ -25,8 +25,8 @@ from License_Plate_Localization.core.yolov3 import YOLOv3, decode
 
 
 INPUT_SIZE   = 416
-NUM_CLASS    = len(utils.read_class_names(cfg.YOLO.CLASSES))
-CLASSES      = utils.read_class_names(cfg.YOLO.CLASSES)
+NUM_CLASS    = len(utils.read_class_names(cfg.YOLO.CLASSES.__str__()))
+CLASSES      = utils.read_class_names(cfg.YOLO.CLASSES.__str__())
 
 predicted_dir_path = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'detection', 'mAP', 'predicted')
 ground_truth_dir_path = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'detection', 'mAP', 'ground-truth')
