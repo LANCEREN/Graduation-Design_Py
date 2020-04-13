@@ -1,7 +1,8 @@
-import os, platform
+import os
 import shutil
 from pathlib2 import Path
 from global_var import globalVars
+from License_Plate_Localization.core.config import cfg
 import xml.dom.minidom as mnd
 
 
@@ -116,7 +117,7 @@ def SelectFileFromCCPD():
 
 def CreateDotNames():
     # create gd_detect.names
-    dotNamePath = globalVars.projectPath / Path('License_Plate_Localization', 'data', 'classes', 'gd_detect.names')
+    dotNamePath = cfg.YOLO.CLASSES
     if os.path.exists(dotNamePath.__str__()): shutil.rmtree(dotNamePath.__str__())
     os.mkdir(dotNamePath.__str__())
     with open(dotNamePath.__str__(), "w+", encoding='utf-8') as f:
@@ -163,16 +164,13 @@ def CreateLabelTxt():
             f.writelines(labelData)
             f.close()
 
-    operatingSystem = 'dos' if platform.system() == 'Windows' else 'unix'  # 获取选择
     annotationDirPath = {
         "labelMe": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'annotations', 'xml'),
         "ccpd": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'dataset', 'JPEGImages',
                                               'ccpd_sample')}
     labelTxtPath = {
-        "train": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
-                                               'gd_detect_train.txt'),
-        "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
-                                              'gd_detect_test.txt')}
+        "train": cfg.TRAIN.ANNOT_PATH,
+        "test": cfg.TEST.ANNOT_PATH}
 
     for key, value in labelTxtPath.items():
         generateLabelTxtInMode(key, value, annotationDirPath)
