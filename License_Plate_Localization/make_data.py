@@ -86,25 +86,26 @@ def SelectFileFromCCPD():
             dirs[:] = [d for d in dirs if not d[0] == '.']
             if rt == (ccpdPath / Path('ccpd_np')).__str__():
                 continue
+            if rt == (ccpdPath / Path('ccpd_base')).__str__():
+                for filename in files:
+                    totalCount += 1
+                    fullFileName = Path(rt, filename)
+                    ccpdName = CCPDNameParams(filename)
 
-            for filename in files:
-                totalCount += 1
-                fullFileName = Path(rt, filename)
-                ccpdName = CCPDNameParams(filename)
-
-                if ccpdName.horizon <= 0 and ccpdName.vertical <= 0 and ccpdName.light >= 100 and ccpdName.blur >= 100:
-                    standCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_Normal)
-                if ccpdName.province >= 31:
-                    specialCarCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
-                if ccpdName.index_of_low.count == 12:
-                    newPowerCarCount += 1
-                    shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
-                if rt == (ccpdPath / Path('ccpd_weather')).__str__():
-                    if ccpdName.horizon <= 2 and ccpdName.vertical <= 2 and ccpdName.blur <= 15:
-                        weatherCount += 1
-                        shutil.copy(fullFileName.__str__(), targetFolder_Weather)
+                    if ccpdName.horizon <= 10 and ccpdName.vertical <= 10 and ccpdName.light >= 100 and ccpdName.blur >= 100:
+                        standCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_Normal)
+                    if ccpdName.province >= 31:
+                        specialCarCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
+                    if ccpdName.index_of_low.count == 12:
+                        newPowerCarCount += 1
+                        shutil.copy(fullFileName.__str__(), targetFolder_SpecialCar)
+            if rt == (ccpdPath / Path('ccpd_weather')).__str__():
+                continue
+                if ccpdName.horizon <= 2 and ccpdName.vertical <= 2 and ccpdName.blur <= 15:
+                    weatherCount += 1
+                    shutil.copy(fullFileName.__str__(), targetFolder_Weather)
 
         print("new power : ", newPowerCarCount)
         print("specialCar : ", specialCarCount)
@@ -155,7 +156,7 @@ def CreateLabelTxt():
                     labelNum += 1
 
         labelData = []
-        for key, value in annotationDirPathDict.iteritems():
+        for key, value in annotationDirPathDict.items():
             generateLabelTxtBySource(labelTxtPath_key, key, value, labelData)
         if os.path.exists(labelTxtPath_value.__str__()): os.remove(labelTxtPath_value.__str__())
         with open(labelTxtPath_value.__str__(), "w+", encoding='utf-8') as f:
@@ -173,8 +174,10 @@ def CreateLabelTxt():
         "test": globalVars.projectPath / Path('License_Plate_Localization', 'data', 'labels', f'{operatingSystem}',
                                               'gd_detect_test.txt')}
 
-    for key, value in labelTxtPath.iteritems():
+    for key, value in labelTxtPath.items():
         generateLabelTxtInMode(key, value, annotationDirPath)
 
 if __name__ == "__main__":
-    CreateDotNames()
+    # SelectFileFromCCPD()
+    # CreateDotNames()
+    CreateLabelTxt()
