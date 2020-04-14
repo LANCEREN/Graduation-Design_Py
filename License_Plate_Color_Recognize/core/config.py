@@ -11,4 +11,4 @@ cfg                           = __C
 # Common options
 __C.COMMON                    = edict()
 
-__C.COMMON.MODEL_DIR_PATH     = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'model')
+__C.COMMON.MODEL_DIR_PATH     = globalVars.projectPath / Path('License_Plate_Color_Recognize', 'data', 'model')
