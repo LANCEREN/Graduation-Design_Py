@@ -24,7 +24,8 @@ from License_Plate_Localization.core.yolov3 import YOLOv3, decode, compute_loss
 from License_Plate_Localization.core.config import cfg
 
 
-def trainModel():
+def TrainModel(mode='new'):
+
     trainset = Dataset('train')
     steps_per_epoch = len(trainset)
     global_steps = tf.Variable(1, trainable=False, dtype=tf.int64)
@@ -87,11 +88,13 @@ def trainModel():
 
 
     for epoch in range(cfg.TRAIN.EPOCHS):
-        for image_data, target in trainset:
-            train_step(image_data, target)
         model_name = "yolov3"
         model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+        if mode == "continue":
+            model.load_weights(model_path.__str__())
+        for image_data, target in trainset:
+            train_step(image_data, target)
         model.save_weights(model_path.__str__())
 
 if __name__ == "__main__":
-    trainModel()
+    TrainModel(mode="new")

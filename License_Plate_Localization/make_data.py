@@ -175,6 +175,7 @@ def CreateLabelTxt():
     for key, value in labelTxtPath.items():
         generateLabelTxtInMode(key, value, annotationDirPath)
 
+
 if __name__ == "__main__":
     # SelectFileFromCCPD()
     # CreateDotNames()
