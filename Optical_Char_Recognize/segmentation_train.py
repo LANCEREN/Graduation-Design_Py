@@ -45,12 +45,6 @@ if __name__ == "__main__":
     if len(list_T) == 0 or len(list_CH)==0 or len(list_F)==0:
         raise Exception("can't find files. please check your folder path.")
 
-
-
-
-
-
-
 #from keras import
 def norm(image):
     return image.astype(np.float)/255

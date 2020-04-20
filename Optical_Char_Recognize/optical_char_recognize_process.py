@@ -9,13 +9,13 @@ import scipy
 import time
 import scipy.signal as l
 
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPool2D
-from keras.optimizers import SGD
-from keras import backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
+from tensorflow.keras.layers import Conv2D, MaxPool2D
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras import backend as K
 
-K.set_image_dim_ordering('tf')
+# K.set_image_dim_ordering('tf')
 
 
 def Getmodel_tensorflow(nb_classes):
@@ -86,18 +86,18 @@ def Getmodel_tensorflow_light(nb_classes):
     return model
 
 
-model = Getmodel_tensorflow_light(3)
+#model = Getmodel_tensorflow_light(3)
 model2 = Getmodel_tensorflow(3)
 
 import os
 
-model.load_weights("./model/char_judgement1.h5")
+#model.load_weights("./model/char_judgement1.h5")
 # model.save("./model/char_judgement1.h5")
-model2.load_weights("./model/char_judgement.h5")
+model2.load_weights("./data/model/char_judgement.h5")
 # model2.save("./model/char_judgement.h5")
 
 
-model = model2
+#model = model2
 
 
 def get_median(data):
@@ -164,8 +164,8 @@ def searchOptimalCuttingPoint(rgb, res_map, start, width_boundingbox, interval_r
 import sys
 
 sys.path.append('../')
-from . import recognizer as cRP
-from . import niblack_thresholding as nt
+from Optical_Char_Recognize import recognizer as cRP
+from Optical_Char_Recognize import niblack_thresholding as nt
 
 
 def refineCrop(sections, width=16):
@@ -237,11 +237,12 @@ def slidingWindowsEval(image):
         # cv2.imshow("image",data)
         data = cv2.equalizeHist(data)
         data = data.astype(np.float) / 255
-        data = np.expand_dims(data, 3)
+        #data = np.expand_dims(data, 3)
+        data = np.expand_dims(data, 2)
         data_sets.append(data)
 
     res = model2.predict(np.array(data_sets))
-    print("分割", time.time() - t0)
+    print("分割time", time.time() - t0)
 
     pin = res
     p = 1 - (res.T)[1]
@@ -296,10 +297,16 @@ def slidingWindowsEval(image):
     t0 = time.time()
     for i, one in enumerate(refined):
         res_pre = cRP.SimplePredict(one, i)
-        # cv2.imshow(str(i),one)
-        # cv2.waitKey(0)
+        cv2.imshow(str(i),one)
+        cv2.waitKey(500)
         confidence += res_pre[0]
         name += res_pre[1]
     print("字符识别", time.time() - t0)
 
     return refined, name, confidence
+
+if __name__ == "__main__":
+    path = r"/Users/lanceren/Desktop/川A2SV59.jpg"
+    img = cv2.imread(path)
+    cvtimg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    a,b,c = slidingWindowsEval(cvtimg)
