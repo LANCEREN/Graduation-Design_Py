@@ -16,7 +16,7 @@ from tensorflow.keras import backend as K
 class train:
     plateType = ["蓝牌", "单层黄牌", "新能源车牌", "白色", "黑色-港澳"]
 
-    def Getmodel_tensorflow(nb_classes):
+    def Getmodel_tensorflow(self, nb_classes):
         # nb_classes = len(charset)
 
         img_rows, img_cols = 9, 34
@@ -47,10 +47,9 @@ class train:
                       metrics=['accuracy'])
         return model
 
-    def SimplePredict(imgPath, model):
-        img = cv2.imread(imgPath.__str__())
-        img = cv2.resize(img, (34, 9))
-        image = img.astype(np.float) / 255
+    def SimplePredict(self, img, model):
+        image = cv2.resize(img, (34, 9))
+        image = image.astype(np.float) / 255
         res = np.array(model.predict(np.array([image]))[0])
         return res.argmax()
 

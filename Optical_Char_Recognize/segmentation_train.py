@@ -6,6 +6,15 @@ import numpy as np
 from pathlib2 import Path
 from Optical_Char_Recognize.core.config import cfg
 
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
+from tensorflow.keras.layers import Convolution2D, MaxPooling2D
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras import backend as K
+
+K.set_image_dim_ordering('tf')
+
+# import skimage.util
 
 char_set = u"0123456789QWERTYUPASDFGHJKLZXCVBNM"
 
@@ -89,15 +98,7 @@ def Genernator(batchSize):
 
 
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
-from tensorflow.keras.layers import Convolution2D, MaxPooling2D
-from tensorflow.keras.optimizers import SGD
-from tensorflow.keras import backend as K
 
-K.set_image_dim_ordering('tf')
-
-# import skimage.util
 
 
 def transfrom( image):

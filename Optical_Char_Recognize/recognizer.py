@@ -1,3 +1,5 @@
+from Optical_Char_Recognize.core.config import cfg
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPool2D
@@ -8,6 +10,8 @@ from tensorflow.keras import backend as K
 
 import cv2
 import numpy as np
+from pathlib2 import Path
+
 
 index = {"京": 0, "沪": 1, "津": 2, "渝": 3, "冀": 4, "晋": 5, "蒙": 6, "辽": 7, "吉": 8, "黑": 9, "苏": 10, "浙": 11, "皖": 12,
          "闽": 13, "赣": 14, "鲁": 15, "豫": 16, "鄂": 17, "湘": 18, "粤": 19, "桂": 20, "琼": 21, "川": 22, "贵": 23, "云": 24,
@@ -105,17 +109,17 @@ def Getmodel_ch(nb_classes):
                   metrics=['accuracy'])
     return model
 
-
-model = Getmodel_tensorflow(65)
 # 构建网络
-
+model = Getmodel_tensorflow(65)
 model_ch = Getmodel_ch(31)
 
-model_ch.load_weights("./data/model/char_chi_sim.h5")
+model_name = "char_rec.h5"
+model_ch_name = "char_chi_sim.h5"
+model_path = Path(cfg.COMMON.MODEL_DIR_PATH, model_name)
+model_ch_path = Path(cfg.COMMON.MODEL_DIR_PATH, model_ch_name)
+model.load_weights(model_path.__str__())
+model_ch.load_weights(model_ch_path.__str__())
 # model_ch.save_weights("./model/char_chi_sim.h5")
-model.load_weights("./data/model/char_rec.h5")
-
-
 # model.save("./model/char_rec.h5")
 
 

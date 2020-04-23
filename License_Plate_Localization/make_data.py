@@ -150,8 +150,8 @@ def CreateLabelTxt():
             for rt, dirs, files in os.walk(annotationDirPath_value.__str__()):
                 files = [f for f in files if not f[0] == '.']
                 dirs[:] = [d for d in dirs if not d[0] == '.']
-                for filename in files:
-                    fullFileName = Path(rt, filename)
+                for fileName in files:
+                    fullFileName = Path(rt, fileName)
                     content = generateContent(annotationDirPath_key, fullFileName)
                     if labelNum % modeNum == 0: data.append(content)
                     labelNum += 1

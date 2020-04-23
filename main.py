@@ -1,10 +1,45 @@
 import os, sys
-from GUI import gui_operator
+import cv2
+from pathlib2 import Path
+from GUI import gui_operate
 from License_Plate_Chars_Recognize import lpcr_operate
+from License_Plate_Color_Recognize import lpcor_operate
 from License_Plate_Localization import lpl_operate
+from License_Plate_Localization import make_data
 from Image_Enhancement import ie_operate
+from Optical_Char_Recognize import ocr_operate
+
+
+path = r"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
+count = 0
+for rt, dirs, files in os.walk(path):
+    files = [f for f in files if not f[0] == '.']
+    dirs[:] = [d for d in dirs if not d[0] == '.']
+    for fileName in files:
+        fullFileName = Path(rt, fileName)
+        ccpdName = make_data.CCPDNameParams(fileName)
+        print(fileName)
+        print(count)
+        img = cv2.imread(fullFileName.__str__())
+        img = img[ccpdName.ymin:ccpdName.ymax, ccpdName.xmin:ccpdName.xmax]
+        cvtimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        ocr_operate.Ocr_Operator(cvtimg, fileName)
+        lpcor_operate.Lpcor_Operator(img, fileName)
+        count += 1
+
+# fileName = "0483-0_5-252&499_594&617-583&616_252&617_263&500_594&499-10_8_13_9_30_29_26-157-137.jpg"
+# fullFileName = Path(path, fileName)
+# ccpdName = make_data.CCPDNameParams(fileName)
+# img = cv2.imread(fullFileName.__str__())
+# print(ccpdName.ymin,ccpdName.ymax, ccpdName.xmin,ccpdName.xmax)
+# img = img[ccpdName.ymin:ccpdName.ymax, ccpdName.xmin:ccpdName.xmax]
+# cv2.imshow("section", img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+# cvtimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# ocr_operate.Ocr_Operator(cvtimg, fileName)
+# lpcor_operate.Lpcor_Operator(img, fileName)
 
 # gui_operator.Gui_Generator()
 # ie_operate.Ie_Operator(1)
-# lpcr_operate.Lpcr_Operator()
-lpl_operate.Lpl_Operator()
+# lpl_operate.Lpl_Operator()

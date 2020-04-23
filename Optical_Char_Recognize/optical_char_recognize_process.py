@@ -1,6 +1,9 @@
 # coding=utf-8
+import os, sys
+import time
 import cv2
 import numpy as np
+from pathlib2 import Path
 
 # from matplotlib import pyplot as plt
 import scipy.ndimage.filters as f
@@ -15,6 +18,9 @@ from tensorflow.keras.layers import Conv2D, MaxPool2D
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras import backend as K
 
+from Optical_Char_Recognize import recognizer as cRP
+from Optical_Char_Recognize import niblack_thresholding as nt
+from Optical_Char_Recognize.core.config import cfg
 # K.set_image_dim_ordering('tf')
 
 
@@ -86,18 +92,18 @@ def Getmodel_tensorflow_light(nb_classes):
     return model
 
 
-#model = Getmodel_tensorflow_light(3)
-model2 = Getmodel_tensorflow(3)
+# model = Getmodel_tensorflow_light(3)
+model = Getmodel_tensorflow(3)
 
-import os
-
-#model.load_weights("./model/char_judgement1.h5")
+# model.load_weights("./model/char_judgement1.h5")
 # model.save("./model/char_judgement1.h5")
-model2.load_weights("./data/model/char_judgement.h5")
-# model2.save("./model/char_judgement.h5")
 
+model_name = "char_judgement.h5"
+model_path = Path(cfg.COMMON.MODEL_DIR_PATH, model_name)
+model.load_weights()
+# model.save("./model/char_judgement.h5")
 
-#model = model2
+# model = model2
 
 
 def get_median(data):
@@ -112,9 +118,6 @@ def get_median(data):
         median = data[(size - 1) // 2]
         data[0] = median
     return data[0]
-
-
-import time
 
 
 def searchOptimalCuttingPoint(rgb, res_map, start, width_boundingbox, interval_range):
@@ -144,11 +147,11 @@ def searchOptimalCuttingPoint(rgb, res_map, start, width_boundingbox, interval_r
                 if p7 >= length:
                     continue
                 score = res_map[p1][2] * 3 - (
-                            res_map[p3][1] + res_map[p4][1] + res_map[p5][1] + res_map[p6][1] + res_map[p7][1]) + 7
+                        res_map[p3][1] + res_map[p4][1] + res_map[p5][1] + res_map[p6][1] + res_map[p7][1]) + 7
                 # print score
                 score_list.append([score, [p1, p2, p3, p4, p5, p6, p7]])
                 p += 1
-    print(p)
+    print(f"共有{p}种方案")
 
     score_list = sorted(score_list, key=lambda x: x[0])
     # for one in score_list[-1][1]:
@@ -159,13 +162,6 @@ def searchOptimalCuttingPoint(rgb, res_map, start, width_boundingbox, interval_r
     #
     print("寻找最佳点", time.time() - t0)
     return score_list[-1]
-
-
-import sys
-
-sys.path.append('../')
-from Optical_Char_Recognize import recognizer as cRP
-from Optical_Char_Recognize import niblack_thresholding as nt
 
 
 def refineCrop(sections, width=16):
@@ -224,7 +220,7 @@ def refineCrop(sections, width=16):
     return new_sections
 
 
-def slidingWindowsEval(image):
+def slidingWindowsEval(image, fileName):
     windows_size = 16;
     stride = 1
     height = image.shape[0]
@@ -237,11 +233,11 @@ def slidingWindowsEval(image):
         # cv2.imshow("image",data)
         data = cv2.equalizeHist(data)
         data = data.astype(np.float) / 255
-        #data = np.expand_dims(data, 3)
+        # data = np.expand_dims(data, 3)
         data = np.expand_dims(data, 2)
         data_sets.append(data)
 
-    res = model2.predict(np.array(data_sets))
+    res = model.predict(np.array(data_sets))
     print("分割time", time.time() - t0)
 
     pin = res
@@ -266,17 +262,21 @@ def slidingWindowsEval(image):
     else:
         cutting_pts.append(image.shape[1] - 1)
     name = ""
-    confidence = 0.00
+    totalConfidence = 0.00
     seg_block = []
+    a = []
     for x in range(1, len(cutting_pts)):
         if x != len(cutting_pts) - 1 and x != 1:
             section = image[0:36, cutting_pts[x - 1] - 2:cutting_pts[x] + 2]
+            qw = image[0:36, cutting_pts[x - 1] -12:cutting_pts[x]-8 ]
+            a.append(qw)
         elif x == 1:
             c_head = cutting_pts[x - 1] - 2
             if c_head < 0:
                 c_head = 0
             c_tail = cutting_pts[x] + 2
             section = image[0:36, c_head:c_tail]
+            cv2.imwrite(f"/Users/lanceren/Desktop/dataset/CH/{fileName}_{x}.jpg", section)
         elif x == len(cutting_pts) - 1:
             end = cutting_pts[x]
             diff = image.shape[1] - end
@@ -292,21 +292,31 @@ def slidingWindowsEval(image):
         else:
             section = image[0:36, cutting_pts[x - 1]:cutting_pts[x]]
         seg_block.append(section)
+        # cv2.imshow("section", section)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        # cv2.imwrite(f"/Users/lanceren/Desktop/{x}.jpg", section)
+    for i, section in enumerate(a):
+        # cv2.imshow("section", i)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        cv2.imwrite(f"/Users/lanceren/Desktop/dataset/F/{fileName}_{i}.jpg", section)
+
+
     refined = refineCrop(seg_block, mid - 1)
 
     t0 = time.time()
     for i, one in enumerate(refined):
         res_pre = cRP.SimplePredict(one, i)
-        cv2.imshow(str(i),one)
-        cv2.waitKey(500)
-        confidence += res_pre[0]
+        # cv2.imshow(str(i), one)
+        # cv2.waitKey(500)
+        totalConfidence += res_pre[0]
         name += res_pre[1]
+        cv2.imwrite(f"/Users/lanceren/Desktop/dataset/T/{fileName}_{i}.jpg", one)
     print("字符识别", time.time() - t0)
+    averageConfidence = totalConfidence / len(name)
+    return refined, name, averageConfidence
 
-    return refined, name, confidence
 
 if __name__ == "__main__":
-    path = r"/Users/lanceren/Desktop/川A2SV59.jpg"
-    img = cv2.imread(path)
-    cvtimg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    a,b,c = slidingWindowsEval(cvtimg)
+    pass
