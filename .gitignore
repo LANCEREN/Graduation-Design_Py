@@ -12,6 +12,8 @@ License_Plate_Chars_Recognize/data/log/
 License_Plate_Chars_Recognize/data/model/
 
 License_Plate_Color_Recognize/data/model/
+License_Plate_Color_Recognize/data/dataset/
+License_Plate_Color_Recognize/data/log/
 
 License_Plate_Localization/data/dataset/
 License_Plate_Localization/data/detection/

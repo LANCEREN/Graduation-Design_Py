@@ -42,6 +42,11 @@ def TrainModel(mode='new'):
         output_tensors.append(pred_tensor)
 
     model = tf.keras.Model(input_tensor, output_tensors)
+    model_name = "yolov3"
+    model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+    if mode == "continue":
+        model.load_weights(model_path.__str__())
+        
     optimizer = tf.keras.optimizers.Adam()
     if os.path.exists(cfg.COMMON.LOG_DIR_PATH.__str__()): shutil.rmtree(cfg.COMMON.LOG_DIR_PATH.__str__())
     writer = tf.summary.create_file_writer(cfg.COMMON.LOG_DIR_PATH.__str__())
@@ -88,10 +93,6 @@ def TrainModel(mode='new'):
 
 
     for epoch in range(cfg.TRAIN.EPOCHS):
-        model_name = "yolov3"
-        model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
-        if mode == "continue":
-            model.load_weights(model_path.__str__())
         for image_data, target in trainset:
             train_step(image_data, target)
         model.save_weights(model_path.__str__())
