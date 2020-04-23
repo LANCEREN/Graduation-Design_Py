@@ -4,6 +4,7 @@ import time
 from pathlib2 import Path
 from global_var import globalVars
 import PIL
+import cv2
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -47,13 +48,8 @@ class Train():
         self.train_count = 0
         self.val_count = 0
 
-        self.LoadData()
-        # 数据准备结束
-        time_elapsed = time.time() - time_begin
-        print("读取test和valid %d图片文件耗费时间：%d秒" % (self.train_count + self.val_count, time_elapsed))
-
         #生成缺省model
-        self.Default_Model_Generator()
+        self.defaultModel = self.Default_Model_Generator()
 
     def LoadData(self):
         # 获取训练和评估图片总数
@@ -134,24 +130,29 @@ class Train():
         model.add(tf.keras.layers.Dense(units=self.trainTargetNumber, activation='softmax',
                                         kernel_initializer=tf.keras.initializers.TruncatedNormal(stddev=0.1),
                                         bias_initializer=tf.keras.initializers.Constant(0.1)))
-
-        model.compile(optimizer=tf.optimizers.Adam(), loss=tf.keras.losses.categorical_crossentropy,
-                      metrics=['accuracy'])
         model.summary()
 
-        self.Default_Model = model
         return model
 
     def Model_Generator(self):
         pass
 
     def TrainModel(self, model):
-        # 训练开始
+        #
         time_begin = time.time()
+
+        # 数据准备结束
+        self.LoadData()
+        time_elapsed = time.time() - time_begin
+        print("读取test和valid %d图片文件耗费时间：%d秒" % (self.train_count + self.val_count, time_elapsed))
+
         # FIXME:
         if os.path.exists(self.logDir): shutil.rmtree(self.logDir)
         writer = tf.summary.create_file_writer(self.logDir)
 
+        # 训练开始
+        model.compile(optimizer=tf.optimizers.Adam(), loss=tf.keras.losses.categorical_crossentropy,
+                      metrics=['accuracy'])
         history = model.fit(self.train_images, self.train_labels, epochs=self.iterations, batch_size=self.batch_size,
                             verbose=self.verbose, validation_split=self.validation_split)
         loss, acc = model.evaluate(self.val_images, self.val_labels)
@@ -173,11 +174,15 @@ class Train():
         # 利用model预测
         modelPath = self.modelSavePath.__str__() if modelPath == "-" else modelPath.__str__()
         predictResult = "-"
-        img = PIL.Image.open(imgPath.__str__())
-        imgInput = np.array(img).reshape(self.inputFormat)
+
+        imgInput = cv2.imread(imgPath)
+        imgInput = cv2.cvtColor(imgInput, cv2.COLOR_BGR2GRAY)
+        imgInput = cv2.resize(imgInput, (self.WIDTH_Column, self.HEIGHT_Row))
+        imgInput = imgInput.reshape(self.inputFormat)
+
         model = tf.keras.models.load_model(modelPath)
-        result = model.predict(x = imgInput)
-        for i in range(0,self.trainTargetNumber):
+        result = np.array(model.predict(np.array(imgInput, dtype=np.float))[0])
+        for i in range(0, self.trainTargetNumber):
             if result[0][i] == 1.0:
                 predictResult = self.trainTarget[i]
                 break
