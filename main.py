@@ -9,14 +9,14 @@ from License_Plate_Localization import make_data
 from Image_Enhancement import ie_operate
 from Optical_Char_Recognize import ocr_operate
 
-
 path = ""
 img = cv2.imread(path)
-lpl_operate.Lpl_Operator(img)
-color = lpcor_operate.Lpcor_Operator(img, path)
-ocr_operate.Ocr_Operator(img, path)
-lpcr_operate.Lpcr_Operator(img)
 
+lpl_operate.Lpl_Operator(img)
+refined, score, name, averageConfidence = ocr_operate.Ocr_Operator(img, path)
+str, con = lpcr_operate.Lpcr_Operator(refined)
+
+color = lpcor_operate.Lpcor_Operator(img, path)
 
 # path = r"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
 # count = 0

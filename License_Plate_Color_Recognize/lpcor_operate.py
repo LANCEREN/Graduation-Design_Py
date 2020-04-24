@@ -17,6 +17,7 @@ def Lpcor_Operator(img, fileName):
 
     predictResult = trainClass.SimplePredict(img, model)
     cv2.imwrite(f"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Color_Recognize/data/dataset/{predictResult}/{fileName}.jpg", img)
+    return trainClass.plateType[predictResult]
 
 
 
