@@ -100,7 +100,7 @@ model = Getmodel_tensorflow(3)
 
 model_name = "char_judgement.h5"
 model_path = Path(cfg.COMMON.MODEL_DIR_PATH, model_name)
-model.load_weights()
+model.load_weights(model_path.__str__())
 # model.save("./model/char_judgement.h5")
 
 # model = model2
@@ -255,6 +255,7 @@ def slidingWindowsEval(image, fileName):
     pin = np.array(pin)
     res = searchOptimalCuttingPoint(image, pin, 0, mid, 3)
 
+    score = res[0]/10
     cutting_pts = res[1]
     last = cutting_pts[-1] + mid
     if last < image.shape[1]:
@@ -276,7 +277,7 @@ def slidingWindowsEval(image, fileName):
                 c_head = 0
             c_tail = cutting_pts[x] + 2
             section = image[0:36, c_head:c_tail]
-            cv2.imwrite(f"/Users/lanceren/Desktop/dataset/CH/{fileName}_{x}.jpg", section)
+            # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/CH/{fileName}_{x}.jpg", section)
         elif x == len(cutting_pts) - 1:
             end = cutting_pts[x]
             diff = image.shape[1] - end
@@ -300,7 +301,8 @@ def slidingWindowsEval(image, fileName):
         # cv2.imshow("section", i)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        cv2.imwrite(f"/Users/lanceren/Desktop/dataset/F/{fileName}_{i}.jpg", section)
+        # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/F/{fileName}_{i}.jpg", section)
+        pass
 
 
     refined = refineCrop(seg_block, mid - 1)
@@ -312,10 +314,10 @@ def slidingWindowsEval(image, fileName):
         # cv2.waitKey(500)
         totalConfidence += res_pre[0]
         name += res_pre[1]
-        cv2.imwrite(f"/Users/lanceren/Desktop/dataset/T/{fileName}_{i}.jpg", one)
+        # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/T/{fileName}_{i}.jpg", one)
     print("字符识别", time.time() - t0)
     averageConfidence = totalConfidence / len(name)
-    return refined, name, averageConfidence
+    return refined, score, name, averageConfidence
 
 
 if __name__ == "__main__":
