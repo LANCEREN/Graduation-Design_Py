@@ -12,7 +12,7 @@ from Optical_Char_Recognize import ocr_operate
 path = ""
 img = cv2.imread(path)
 
-lpl_operate.Lpl_Operator(img)
+plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img)
 refined, score, name, averageConfidence = ocr_operate.Ocr_Operator(img, path)
 str, con = lpcr_operate.Lpcr_Operator(refined)
 

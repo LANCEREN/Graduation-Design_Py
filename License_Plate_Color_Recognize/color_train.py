@@ -3,6 +3,7 @@ import os, shutil
 import cv2
 import numpy as np
 from pathlib2 import Path
+from License_Plate_Color_Recognize.core.config import cfg
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPool2D
@@ -13,7 +14,7 @@ from tensorflow.keras import backend as K
 # K.set_image_dim_ordering('tf')
 
 
-class train:
+class Train:
     plateType = ["蓝牌", "单层黄牌", "新能源车牌", "白色", "黑色-港澳"]
 
     def Getmodel_tensorflow(self, nb_classes):
@@ -47,7 +48,14 @@ class train:
                       metrics=['accuracy'])
         return model
 
-    def SimplePredict(self, img, model):
+    def SimplePredict(self, img):
+
+        model = self.Getmodel_tensorflow(5)
+        model_name = "plate_type.h5"
+        model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+        model.load_weights(model_path.__str__())
+        model.save(model_path.__str__())
+
         image = cv2.resize(img, (34, 9))
         image = image.astype(np.float) / 255
         res = np.array(model.predict(np.array([image]))[0])

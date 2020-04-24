@@ -8,14 +8,8 @@ from License_Plate_Color_Recognize.core.config import cfg
 def Lpcor_Operator(img, fileName):
     """进行车牌颜色识别License_Plate_Color_Recognize"""
 
-    trainClass = color_train.train()
-    model = trainClass.Getmodel_tensorflow(5)
-    model_name = "plate_type.h5"
-    model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
-    model.load_weights(model_path.__str__())
-    model.save(model_path.__str__())
-
-    predictResult = trainClass.SimplePredict(img, model)
+    trainClass = color_train.Train()
+    predictResult = trainClass.SimplePredict(img)
     cv2.imwrite(f"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Color_Recognize/data/dataset/{predictResult}/{fileName}.jpg", img)
     return trainClass.plateType[predictResult]
 
