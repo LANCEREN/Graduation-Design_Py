@@ -170,23 +170,23 @@ class Train():
         time_elapsed = time.time() - time_begin
         print("训练和验证共耗费时间：%d秒" % time_elapsed)
 
-    def PredictImg(self, imgPath, modelPath = '-'):
+
+    def PredictImg(self, img, modelPath = '-'):
         # 利用model预测
         modelPath = self.modelSavePath.__str__() if modelPath == "-" else modelPath.__str__()
-        predictResult = "-"
 
-        imgInput = cv2.imread(imgPath)
-        imgInput = cv2.cvtColor(imgInput, cv2.COLOR_BGR2GRAY)
+        imgInput = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         imgInput = cv2.resize(imgInput, (self.WIDTH_Column, self.HEIGHT_Row))
         imgInput = imgInput.reshape(self.inputFormat)
 
         model = tf.keras.models.load_model(modelPath)
         result = np.array(model.predict(np.array(imgInput, dtype=np.float))[0])
-        for i in range(0, self.trainTargetNumber):
-            if result[0][i] == 1.0:
-                predictResult = self.trainTarget[i]
-                break
-        return predictResult
+
+        id = result.argmax()
+        confidence = result[id]
+        predictResult = self.trainTarget[id]
+
+        return [predictResult, confidence]
 
 class ProvinceTrain(Train):
     # 省份训练器
