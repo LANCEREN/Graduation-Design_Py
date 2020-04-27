@@ -3,8 +3,9 @@ import cv2
 import os
 from pathlib2 import Path
 
+
 def Ocr_Operator(img, fileName):
-    cvtimg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    cvtimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     refined, score, name, averageConfidence = optical_char_recognize_process.slidingWindowsEval(cvtimg, fileName)
     return refined, score, name, averageConfidence
 
@@ -14,7 +15,6 @@ if __name__ == "__main__":
     img = cv2.imread(path)
     cvtimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     a, b, c, d = optical_char_recognize_process.slidingWindowsEval(cvtimg, "川A2SV59")
-
 
     #
     # path = r"/Users/lanceren/Downloads/GD_Dataset/Raw_Data/车牌检测数据/训练车牌检测模型数据/has"

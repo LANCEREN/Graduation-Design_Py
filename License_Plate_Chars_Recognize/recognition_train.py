@@ -175,8 +175,8 @@ class Train():
         # 利用model预测
         modelPath = self.modelSavePath.__str__() if modelPath == "-" else modelPath.__str__()
 
-        imgInput = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        imgInput = cv2.resize(imgInput, (self.WIDTH_Column, self.HEIGHT_Row))
+        if len(img.shape) > 2: img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        imgInput = cv2.resize(img, (self.WIDTH_Column, self.HEIGHT_Row))
         imgInput = imgInput.reshape(self.inputFormat)
 
         model = tf.keras.models.load_model(modelPath)

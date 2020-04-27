@@ -11,7 +11,8 @@ cfg                           = __C
 # Common options
 __C.COMMON                    = edict()
 
-__C.COMMON.T_DIR_PATH       = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'log')
-__C.COMMON.F_DIR_PATH       = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'log')
-__C.COMMON.CH_DIR_PATH      = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'log')
+__C.COMMON.T_DIR_PATH       = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'dataset')
+__C.COMMON.F_DIR_PATH       = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'dataset')
+__C.COMMON.CH_DIR_PATH      = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'dataset')
 __C.COMMON.MODEL_DIR_PATH     = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'model')
+__C.COMMON.DETECTION_DIR_PATH     = globalVars.projectPath / Path('Optical_Char_Recognize', 'data', 'detection')
