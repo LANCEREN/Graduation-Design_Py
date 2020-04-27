@@ -61,7 +61,7 @@ def ImgProcess(imgPath):
 
 def MakeData():
     pass
-    # path = r"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
+    # path = r"/Users/lanceren/PycharmProjects/Graduation-Design_Py/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
     # count = 0
     # for rt, dirs, files in os.walk(path):
     #     files = [f for f in files if not f[0] == '.']
