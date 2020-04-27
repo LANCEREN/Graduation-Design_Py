@@ -22,3 +22,5 @@ License_Plate_Localization/data/model/
 License_Plate_Localization/data/annotations/
 
 Optical_Char_Recognize/data/model/
+Optical_Char_Recognize/data/dataset/
+Optical_Char_Recognize/data/detection/
