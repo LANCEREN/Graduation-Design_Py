@@ -2,6 +2,7 @@ import os, sys
 import cv2
 import argparse
 from pathlib2 import Path
+from global_var import globalVars
 # from GUI import gui_operate
 from License_Plate_Chars_Recognize import lpcr_operate
 from License_Plate_Color_Recognize import lpcor_operate
