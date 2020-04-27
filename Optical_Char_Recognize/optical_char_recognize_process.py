@@ -93,17 +93,19 @@ def Getmodel_tensorflow_light(nb_classes):
 
 
 # model = Getmodel_tensorflow_light(3)
-model = Getmodel_tensorflow(3)
+
 
 # model.load_weights("./model/char_judgement1.h5")
 # model.save("./model/char_judgement1.h5")
 
 model_name = "char_judgement.h5"
-model_path = Path(cfg.COMMON.MODEL_DIR_PATH, model_name)
+model_path = cfg.COMMON.MODEL_DIR_PATH / Path(model_name)
+model = Getmodel_tensorflow(3)
 model.load_weights(model_path.__str__())
 # model.save("./model/char_judgement.h5")
 
 # model = model2
+detectionDir_path = cfg.COMMON.MODEL_DIR_PATH
 
 
 def get_median(data):
@@ -168,7 +170,6 @@ def refineCrop(sections, width=16):
     new_sections = []
     for section in sections:
         # cv2.imshow("section¡",section)
-
         # cv2.blur(section,(3,3),3)
 
         sec_center = np.array([section.shape[1] / 2, section.shape[0] / 2])
@@ -179,8 +180,7 @@ def refineCrop(sections, width=16):
             x, y, w, h = cv2.boundingRect(contour)
 
             ratio = w / float(h)
-            if ratio < 1 and h > 36 * 0.4 and y < 16 \
-                    :
+            if ratio < 1 and h > 36 * 0.4 and y < 16 :
                 box = [x, y, w, h]
 
                 boxs.append([box, np.array([x + w / 2, y + h / 2])])
@@ -265,19 +265,20 @@ def slidingWindowsEval(image, fileName):
     name = ""
     totalConfidence = 0.00
     seg_block = []
-    a = []
+    collectF = []
     for x in range(1, len(cutting_pts)):
         if x != len(cutting_pts) - 1 and x != 1:
             section = image[0:36, cutting_pts[x - 1] - 2:cutting_pts[x] + 2]
-            qw = image[0:36, cutting_pts[x - 1] -12:cutting_pts[x]-8 ]
-            a.append(qw)
+            imgF = image[0:36, cutting_pts[x - 1] -12:cutting_pts[x]-8 ]
+            collectF.append(imgF)
         elif x == 1:
             c_head = cutting_pts[x - 1] - 2
             if c_head < 0:
                 c_head = 0
             c_tail = cutting_pts[x] + 2
             section = image[0:36, c_head:c_tail]
-            # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/CH/{fileName}_{x}.jpg", section)
+            detectionCH_path = detectionDir_path / Path('CH', f'{fileName}.jpg')
+            cv2.imwrite(detectionCH_path.__str__(), section)
         elif x == len(cutting_pts) - 1:
             end = cutting_pts[x]
             diff = image.shape[1] - end
@@ -293,28 +294,24 @@ def slidingWindowsEval(image, fileName):
         else:
             section = image[0:36, cutting_pts[x - 1]:cutting_pts[x]]
         seg_block.append(section)
-        # cv2.imshow("section", section)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        # cv2.imwrite(f"/Users/lanceren/Desktop/{x}.jpg", section)
-    for i, section in enumerate(a):
+    for i, section in enumerate(collectF):
         # cv2.imshow("section", i)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/F/{fileName}_{i}.jpg", section)
+        detectionF_path = detectionDir_path / Path('F', f'{fileName}_{i}.jpg')
+        cv2.imwrite(detectionF_path.__str__(), section)
         pass
 
 
     refined = refineCrop(seg_block, mid - 1)
 
     t0 = time.time()
-    for i, one in enumerate(refined):
-        res_pre = cRP.SimplePredict(one, i)
-        # cv2.imshow(str(i), one)
-        # cv2.waitKey(500)
+    for i, section in enumerate(refined):
+        res_pre = cRP.SimplePredict(section, i)
         totalConfidence += res_pre[0]
         name += res_pre[1]
-        # cv2.imwrite(f"/Users/lanceren/Desktop/dataset/T/{fileName}_{i}.jpg", one)
+        detectionT_path = detectionDir_path / Path('T', f'{fileName}_{i}.jpg')
+        cv2.imwrite(detectionT_path.__str__(), section)
     print("字符识别", time.time() - t0)
     averageConfidence = totalConfidence / len(name)
     return refined, score, name, averageConfidence

@@ -139,24 +139,26 @@ class Train():
             detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(f"{image_name}.jpg")
             cv2.imwrite(detected_image_path.__str__(), image)
 
-
         coor = np.array(bboxes[-1][:4], dtype=np.int32)
         plate_precise = img[coor[1]:coor[3], coor[0]:coor[2]]
 
-        if coor[3]-coor[1] < image_size[0]//2 and coor[2]-coor[0] < image_size[1]//2:
-            if image_size[0]//4 < (coor[1] + coor[3])//2 < 3 * image_size[0]//4 \
-                    and image_size[1]//4 < (coor[0] + coor[2])//2 < 3 * image_size[1]//4:
-                plate_general = image[(coor[1]+coor[3])//2 - image_size[0]//4: (coor[1]+coor[3])//2 + image_size[0]//4,
-                                (coor[0]+coor[2])//2 - image_size[1]//4: (coor[0]+coor[2])//2 + image_size[1]//4]
+        if coor[3] - coor[1] < image_size[0] // 2 and coor[2] - coor[0] < image_size[1] // 2:
+            if image_size[0] // 4 < (coor[1] + coor[3]) // 2 < 3 * image_size[0] // 4 \
+                    and image_size[1] // 4 < (coor[0] + coor[2]) // 2 < 3 * image_size[1] // 4:
+                plate_general = image[
+                                (coor[1] + coor[3]) // 2 - image_size[0] // 4: (coor[1] + coor[3]) // 2 + image_size[
+                                    0] // 4,
+                                (coor[0] + coor[2]) // 2 - image_size[1] // 4: (coor[0] + coor[2]) // 2 + image_size[
+                                    1] // 4]
             else:
-                if (coor[1] + coor[3])//2 < image_size[0]//4:
-                    plate_general = image[0: image_size[0]//2, :]
+                if (coor[1] + coor[3]) // 2 < image_size[0] // 4:
+                    plate_general = image[0: image_size[0] // 2, :]
                 else:
-                    plate_general = image[image_size[0]//2: image_size[0], :]
-                if (coor[0] + coor[2])//2 < image_size[1]//4:
-                    plate_general = plate_general[:, 0: image_size[1]//2]
+                    plate_general = image[image_size[0] // 2: image_size[0], :]
+                if (coor[0] + coor[2]) // 2 < image_size[1] // 4:
+                    plate_general = plate_general[:, 0: image_size[1] // 2]
                 else:
-                    plate_general = plate_general[:, image_size[1]//2: image_size[1]]
+                    plate_general = plate_general[:, image_size[1] // 2: image_size[1]]
         else:
             plate_general = image
         plateConf = bboxes[-1][4]
