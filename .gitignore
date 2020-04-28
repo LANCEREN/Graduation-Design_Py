@@ -5,6 +5,8 @@
 
 **/venv
 
+output/
+
 Image_Enhancement/data/dataset/
 
 License_Plate_Chars_Recognize/data/dataset/

@@ -6,8 +6,8 @@ import cv2
 
 def Lpl_Operator(img, fileName):
     trainClass = location_train.Train()
-    plateImg_general, plateImg_precise, plateConf = trainClass.predictImg(img, fileName)
-    return [plateImg_general, plateImg_precise, plateConf]
+    plateImg_whole, plateImg_general, plateImg_precise, plateConf = trainClass.predictImg(img, fileName)
+    return [plateImg_whole, plateImg_general, plateImg_precise, plateConf]
 
 if __name__ == "__main__":
     path = "/Users/lanceren/Desktop/A4F7A413-972E-4CF6-B875-B538404556D8_1_105_c.jpg"

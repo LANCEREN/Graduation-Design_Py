@@ -39,23 +39,25 @@ arg = parser.parse_args()
 
 
 def ImgProcess(imgPath):
-    defaultPath = Path("/Users/lanceren/Desktop/test/2.jpg")
-    outPath = Path("/Users/lanceren/Desktop/test/output")
-    plateImgPrecisePath = outPath / Path("plateImg_precise.jpg")
-    plateImgGeneralPath = outPath / Path("plateImg_general.jpg")
+    outPath = globalVars.projectPath / Path('output')
+    defaultPath = outPath / Path('defaultPicture.jpg')
+    plateImgWholePath = outPath / Path('lpl', 'plateImg_whole.jpg')
+    plateImgPrecisePath = outPath / Path('lpl', 'plateImg_precise.jpg')
+    plateImgGeneralPath = outPath / Path('lpl', 'plateImg_general.jpg')
     img = cv2.imread(imgPath.__str__())
-    fileName = "test"
+    fileName = imgPath.stem
 
-    plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img, fileName)
+    plateImg_whole, plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img, fileName)
     refined, score, name, averageConfidence = ocr_operate.Ocr_Operator(plateImg_precise, fileName)
-    str, con = lpcr_operate.Lpcr_Operator(refined)
+    plateNumber, con = lpcr_operate.Lpcr_Operator(refined)
     color = lpcor_operate.Lpcor_Operator(img, fileName)
 
     print(color, name)
 
     for i, pic in enumerate(refined):
-        fullFilePath = outPath / Path(f"{i}.jpg")
+        fullFilePath = outPath / Path('ocr', f"{i}.jpg")
         cv2.imwrite(fullFilePath.__str__(), pic)
+    cv2.imwrite(plateImgwholePath.__str__(), plateImg_whole)
     cv2.imwrite(plateImgPrecisePath.__str__(), plateImg_precise)
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
 

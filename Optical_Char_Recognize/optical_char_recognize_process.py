@@ -221,7 +221,7 @@ def refineCrop(sections, width=16):
 
 
 def slidingWindowsEval(image, fileName):
-    windows_size = 16;
+    windows_size = 16
     stride = 1
     height = image.shape[0]
     t0 = time.time()
@@ -264,8 +264,9 @@ def slidingWindowsEval(image, fileName):
         cutting_pts.append(image.shape[1] - 1)
     name = ""
     totalConfidence = 0.00
-    seg_block = []
+    collectT = []
     collectF = []
+    collectCH = []
     for x in range(1, len(cutting_pts)):
         if x != len(cutting_pts) - 1 and x != 1:
             section = image[0:36, cutting_pts[x - 1] - 2:cutting_pts[x] + 2]
@@ -277,8 +278,8 @@ def slidingWindowsEval(image, fileName):
                 c_head = 0
             c_tail = cutting_pts[x] + 2
             section = image[0:36, c_head:c_tail]
-            detectionCH_path = detectionDir_path / Path('CH', f'{fileName}.jpg')
-            cv2.imwrite(detectionCH_path.__str__(), section)
+            collectCH.append(section)
+            # detectionCH_path = detectionDir_path / Path('CH', f'{fileName}.jpg')
         elif x == len(cutting_pts) - 1:
             end = cutting_pts[x]
             diff = image.shape[1] - end
@@ -293,25 +294,20 @@ def slidingWindowsEval(image, fileName):
             section = image[0:36, cutting_pts[x - 1] - 3:cutting_pts[x - 1] + mid]
         else:
             section = image[0:36, cutting_pts[x - 1]:cutting_pts[x]]
-        seg_block.append(section)
+        collectT.append(section)
     for i, section in enumerate(collectF):
-        # cv2.imshow("section", i)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        detectionF_path = detectionDir_path / Path('F', f'{fileName}_{i}.jpg')
-        cv2.imwrite(detectionF_path.__str__(), section)
+        # detectionF_path = detectionDir_path / Path('F', f'{fileName}_{i}.jpg')
         pass
 
 
-    refined = refineCrop(seg_block, mid - 1)
+    refined = refineCrop(collectT, mid - 1)
 
     t0 = time.time()
     for i, section in enumerate(refined):
         res_pre = cRP.SimplePredict(section, i)
         totalConfidence += res_pre[0]
         name += res_pre[1]
-        detectionT_path = detectionDir_path / Path('T', f'{fileName}_{i}.jpg')
-        cv2.imwrite(detectionT_path.__str__(), section)
+        # detectionT_path = detectionDir_path / Path('T', f'{fileName}_{i}.jpg')
     print("字符识别", time.time() - t0)
     averageConfidence = totalConfidence / len(name)
     return refined, score, name, averageConfidence
