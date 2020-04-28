@@ -57,7 +57,7 @@ def ImgProcess(imgPath):
     for i, pic in enumerate(refined):
         fullFilePath = outPath / Path('ocr', f"{i}.jpg")
         cv2.imwrite(fullFilePath.__str__(), pic)
-    cv2.imwrite(plateImgwholePath.__str__(), plateImg_whole)
+    cv2.imwrite(plateImgWholePath.__str__(), plateImg_whole)
     cv2.imwrite(plateImgPrecisePath.__str__(), plateImg_precise)
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
 
