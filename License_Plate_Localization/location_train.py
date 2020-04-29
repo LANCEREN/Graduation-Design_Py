@@ -103,8 +103,7 @@ class Train():
         NUM_CLASS = len(utils.read_class_names(cfg.YOLO.CLASSES.__str__()))
         CLASSES = utils.read_class_names(cfg.YOLO.CLASSES.__str__())
 
-        if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH.__str__()): shutil.rmtree(
-            cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
+        if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH.__str__()): shutil.rmtree(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
         os.mkdir(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
 
         # Build Model
@@ -136,8 +135,8 @@ class Train():
         if cfg.TEST.DECTECTED_IMAGE_PATH.__str__() is not None:
             image = utils.draw_bbox(image, bboxes)
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-            detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(f"{image_name}.jpg")
-            cv2.imwrite(detected_image_path.__str__(), image)
+            plate_whole = image
+            # detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(f"{image_name}.jpg")
 
         coor = np.array(bboxes[-1][:4], dtype=np.int32)
         plate_precise = img[coor[1]:coor[3], coor[0]:coor[2]]
@@ -165,7 +164,7 @@ class Train():
         # cv2.imshow("x", plate_general)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        return plate_general, plate_precise, plateConf
+        return plate_whole, plate_general, plate_precise, plateConf
 
 
 if __name__ == "__main__":
