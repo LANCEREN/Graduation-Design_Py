@@ -6,7 +6,8 @@
 
 **/venv
 
-output/
+output/lpl/
+output/ocr/
 
 Image_Enhancement/data/dataset/
 
