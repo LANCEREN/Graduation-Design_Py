@@ -66,14 +66,13 @@ def ImgProcess(imgPath):
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
 
     time01 = time.time()
-    txtData.append(name + os.linesep)
-    txtData.append(color + os.linesep)
-    txtData.append(str(averageConfidence) + os.linesep)
-    txtData.append(str(time01-time00) + os.linesep)
+    txtData.append(name + '\n')
+    txtData.append(color + '\n')
+    txtData.append(str(averageConfidence) + '\n')
+    txtData.append(str(time01-time00) + '\n')
 
     with open(resultTxtPath.__str__(), "w+", encoding='utf-8') as f:
         f.writelines(txtData)
-        f.close()
 
 
 def MakeData():
