@@ -1,5 +1,6 @@
 import os, sys
 import cv2
+import time
 import argparse
 from pathlib2 import Path
 from global_var import globalVars
@@ -11,6 +12,7 @@ from License_Plate_Localization import make_data
 from Image_Enhancement import ie_operate
 from Optical_Char_Recognize import ocr_operate
 
+time00 = time.time()
 parser = argparse.ArgumentParser()
 parser.description = "GD python part"
 parser.prog = "GD_Python"
@@ -44,6 +46,8 @@ def ImgProcess(imgPath):
     plateImgWholePath = outPath / Path('lpl', 'plateImg_whole.jpg')
     plateImgPrecisePath = outPath / Path('lpl', 'plateImg_precise.jpg')
     plateImgGeneralPath = outPath / Path('lpl', 'plateImg_general.jpg')
+    resultTxtPath = outPath / Path('result.txt')
+    txtData = []
     img = cv2.imread(imgPath.__str__())
     fileName = imgPath.stem
 
@@ -52,7 +56,7 @@ def ImgProcess(imgPath):
     plateNumber, con = lpcr_operate.Lpcr_Operator(refined)
     color = lpcor_operate.Lpcor_Operator(img, fileName)
 
-    print(color, name)
+    print(color, name, averageConfidence)
 
     for i, pic in enumerate(refined):
         fullFilePath = outPath / Path('ocr', f"{i}.jpg")
@@ -60,6 +64,16 @@ def ImgProcess(imgPath):
     cv2.imwrite(plateImgWholePath.__str__(), plateImg_whole)
     cv2.imwrite(plateImgPrecisePath.__str__(), plateImg_precise)
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
+
+    time01 = time.time()
+    txtData.append(name + os.linesep)
+    txtData.append(color + os.linesep)
+    txtData.append(str(averageConfidence) + os.linesep)
+    txtData.append(str(time01-time00) + os.linesep)
+
+    with open(resultTxtPath.__str__(), "w+", encoding='utf-8') as f:
+        f.writelines(txtData)
+        f.close()
 
 
 def MakeData():
