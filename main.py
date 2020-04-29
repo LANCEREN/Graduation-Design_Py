@@ -1,7 +1,9 @@
 import os, sys
 import cv2
+import time
 import argparse
 from pathlib2 import Path
+from global_var import globalVars
 # from GUI import gui_operate
 from License_Plate_Chars_Recognize import lpcr_operate
 from License_Plate_Color_Recognize import lpcor_operate
@@ -10,6 +12,7 @@ from License_Plate_Localization import make_data
 from Image_Enhancement import ie_operate
 from Optical_Char_Recognize import ocr_operate
 
+time00 = time.time()
 parser = argparse.ArgumentParser()
 parser.description = "GD python part"
 parser.prog = "GD_Python"
@@ -38,30 +41,43 @@ arg = parser.parse_args()
 
 
 def ImgProcess(imgPath):
-    defaultPath = Path("/Users/lanceren/Desktop/test/2.jpg")
-    outPath = Path("/Users/lanceren/Desktop/test/output")
-    plateImgPrecisePath = outPath / Path("plateImg_precise.jpg")
-    plateImgGeneralPath = outPath / Path("plateImg_general.jpg")
+    outPath = globalVars.projectPath / Path('output')
+    defaultPath = outPath / Path('defaultPicture.jpg')
+    plateImgWholePath = outPath / Path('lpl', 'plateImg_whole.jpg')
+    plateImgPrecisePath = outPath / Path('lpl', 'plateImg_precise.jpg')
+    plateImgGeneralPath = outPath / Path('lpl', 'plateImg_general.jpg')
+    resultTxtPath = outPath / Path('result.txt')
+    txtData = []
     img = cv2.imread(imgPath.__str__())
-    fileName = "test"
+    fileName = imgPath.stem
 
-    plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img, fileName)
+    plateImg_whole, plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img, fileName)
     refined, score, name, averageConfidence = ocr_operate.Ocr_Operator(plateImg_precise, fileName)
-    str, con = lpcr_operate.Lpcr_Operator(refined)
+    plateNumber, con = lpcr_operate.Lpcr_Operator(refined)
     color = lpcor_operate.Lpcor_Operator(img, fileName)
 
-    print(color, name)
+    print(color, name, averageConfidence)
 
     for i, pic in enumerate(refined):
-        fullFilePath = outPath / Path(f"{i}.jpg")
+        fullFilePath = outPath / Path('ocr', f"{i}.jpg")
         cv2.imwrite(fullFilePath.__str__(), pic)
+    cv2.imwrite(plateImgWholePath.__str__(), plateImg_whole)
     cv2.imwrite(plateImgPrecisePath.__str__(), plateImg_precise)
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
+
+    time01 = time.time()
+    txtData.append(name + '\n')
+    txtData.append(color + '\n')
+    txtData.append(str(averageConfidence) + '\n')
+    txtData.append(str(time01-time00) + '\n')
+
+    with open(resultTxtPath.__str__(), "w+", encoding='utf-8') as f:
+        f.writelines(txtData)
 
 
 def MakeData():
     pass
-    # path = r"/Users/lanceren/PycharmProjects/LPR_OpenCV_Graduation/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
+    # path = r"/Users/lanceren/PycharmProjects/Graduation-Design_Py/License_Plate_Localization/data/dataset/JPEGImages/ccpd_sample"
     # count = 0
     # for rt, dirs, files in os.walk(path):
     #     files = [f for f in files if not f[0] == '.']

@@ -142,7 +142,7 @@ def CreateLabelTxt():
                 switch = {'labelMe': case1,
                           'ccpd': case2}
                 choice = source  # 获取选择
-                content = switch.get(choice, default)() + os.linesep  # 执行对应的函数，如果没有就执行默认的函数
+                content = switch.get(choice, default)() + '\n'  # 执行对应的函数，如果没有就执行默认的函数
                 return content
 
             labelNum = 0
