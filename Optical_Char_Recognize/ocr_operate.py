@@ -6,8 +6,8 @@ from pathlib2 import Path
 
 def Ocr_Operator(img, fileName):
     cvtimg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    refined, score, name, averageConfidence = optical_char_recognize_process.slidingWindowsEval(cvtimg, fileName)
-    return refined, score, name, averageConfidence
+    refined, score = optical_char_recognize_process.slidingWindowsEval(cvtimg, fileName)
+    return refined, score
 
 
 if __name__ == "__main__":

@@ -1,26 +1,27 @@
 from License_Plate_Chars_Recognize import recognition_train
+from License_Plate_Chars_Recognize import recognizer
 import cv2
 
 
-def Lpcr_Operator(refined):
+def Lpcr_Operator(refined, plateImgPrecise):
     """进行车牌识别License_Plate_Chars_Recognize"""
-
-    license_num = ""
-    totalConfidence = 0
-
-    D = recognition_train.DigitsTrain(iterations=25)
-    for i, select in enumerate(refined):
-        res_pre = D.PredictImg(select)
-        license_num += res_pre[0]
-        totalConfidence += res_pre[1]
-    averageConfidence = totalConfidence/len(refined)
-    return license_num, averageConfidence
+    recognizerClass = recognizer.LPR()
+    license_num, confidence = recognizerClass.RecognizePlate(plateImage=plateImgPrecise)
+    return license_num, confidence
 
 
 if __name__ == "__main__":
-    D = recognition_train.DigitsTrain(iterations=25)
-    img = cv2.imread("/Users/lanceren/Desktop/1.jpg")
-    D.PredictImg(img)
+    # license_num = ""
+    # totalConfidence = 0
+    #
+    # D = recognition_train.DigitsTrain(iterations=25)
+    # for i, select in enumerate(refined):
+    #     res_pre = D.PredictImg(select)
+    #     license_num += res_pre[0]
+    #     totalConfidence += res_pre[1]
+    # averageConfidence = totalConfidence / len(refined)
+    # return license_num, averageConfidence
+    pass
     # P = TrainLicensePlateClass.ProvinceTrain(iterations=25)
     # P.TrainModel(P.Default_Model)
     # L = TrainLicensePlateClass.LettersTrain(iterations=25)

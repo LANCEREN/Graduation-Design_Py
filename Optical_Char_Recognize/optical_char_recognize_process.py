@@ -1,13 +1,10 @@
 # coding=utf-8
-import os, sys
-import time
 import cv2
 import numpy as np
 from pathlib2 import Path
 
 # from matplotlib import pyplot as plt
 import scipy.ndimage.filters as f
-import scipy
 
 import time
 import scipy.signal as l
@@ -15,12 +12,12 @@ import scipy.signal as l
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPool2D
-from tensorflow.keras.optimizers import SGD
-from tensorflow.keras import backend as K
 
-from Optical_Char_Recognize import recognizer as cRP
+from License_Plate_Chars_Recognize import recognizer as cRP
 from Optical_Char_Recognize import niblack_thresholding as nt
 from Optical_Char_Recognize.core.config import cfg
+
+
 # K.set_image_dim_ordering('tf')
 
 
@@ -180,7 +177,7 @@ def refineCrop(sections, width=16):
             x, y, w, h = cv2.boundingRect(contour)
 
             ratio = w / float(h)
-            if ratio < 1 and h > 36 * 0.4 and y < 16 :
+            if ratio < 1 and h > 36 * 0.4 and y < 16:
                 box = [x, y, w, h]
 
                 boxs.append([box, np.array([x + w / 2, y + h / 2])])
@@ -255,22 +252,20 @@ def slidingWindowsEval(image, fileName):
     pin = np.array(pin)
     res = searchOptimalCuttingPoint(image, pin, 0, mid, 3)
 
-    score = res[0]/10
+    score = res[0] / 10
     cutting_pts = res[1]
     last = cutting_pts[-1] + mid
     if last < image.shape[1]:
         cutting_pts.append(last)
     else:
         cutting_pts.append(image.shape[1] - 1)
-    name = ""
-    totalConfidence = 0.00
     collectT = []
     collectF = []
     collectCH = []
     for x in range(1, len(cutting_pts)):
         if x != len(cutting_pts) - 1 and x != 1:
             section = image[0:36, cutting_pts[x - 1] - 2:cutting_pts[x] + 2]
-            imgF = image[0:36, cutting_pts[x - 1] -12:cutting_pts[x]-8 ]
+            imgF = image[0:36, cutting_pts[x - 1] - 12:cutting_pts[x] - 8]
             collectF.append(imgF)
         elif x == 1:
             c_head = cutting_pts[x - 1] - 2
@@ -299,18 +294,8 @@ def slidingWindowsEval(image, fileName):
         # detectionF_path = detectionDir_path / Path('F', f'{fileName}_{i}.jpg')
         pass
 
-
     refined = refineCrop(collectT, mid - 1)
-
-    t0 = time.time()
-    for i, section in enumerate(refined):
-        res_pre = cRP.SimplePredict(section, i)
-        totalConfidence += res_pre[0]
-        name += res_pre[1]
-        # detectionT_path = detectionDir_path / Path('T', f'{fileName}_{i}.jpg')
-    print("字符识别", time.time() - t0)
-    averageConfidence = totalConfidence / len(name)
-    return refined, score, name, averageConfidence
+    return refined, score
 
 
 if __name__ == "__main__":

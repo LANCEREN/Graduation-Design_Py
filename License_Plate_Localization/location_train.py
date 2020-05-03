@@ -103,7 +103,8 @@ class Train():
         NUM_CLASS = len(utils.read_class_names(cfg.YOLO.CLASSES.__str__()))
         CLASSES = utils.read_class_names(cfg.YOLO.CLASSES.__str__())
 
-        if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH.__str__()): shutil.rmtree(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
+        if os.path.exists(cfg.TEST.DECTECTED_IMAGE_PATH.__str__()): shutil.rmtree(
+            cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
         os.mkdir(cfg.TEST.DECTECTED_IMAGE_PATH.__str__())
 
         # Build Model
@@ -138,7 +139,14 @@ class Train():
             plate_whole = image
             # detected_image_path = cfg.TEST.DECTECTED_IMAGE_PATH / Path(f"{image_name}.jpg")
 
-        coor = np.array(bboxes[-1][:4], dtype=np.int32)
+        try:
+            if len(bboxes) == 0:
+                raise Exception("未检测到车牌")
+        except Exception as err:
+            print("Lpl error: ", err)
+            raise
+        else:
+            coor = np.array(bboxes[-1][:4], dtype=np.int32)
         plate_precise = img[coor[1]:coor[3], coor[0]:coor[2]]
 
         if coor[3] - coor[1] < image_size[0] // 2 and coor[2] - coor[0] < image_size[1] // 2:

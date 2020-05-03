@@ -51,14 +51,14 @@ def ImgProcess(imgPath):
     img = cv2.imread(imgPath.__str__())
     fileName = imgPath.stem
 
-    plateImg_whole, plateImg_general, plateImg_precise, plateConf = lpl_operate.Lpl_Operator(img, fileName)
-    refined, score, name, averageConfidence = ocr_operate.Ocr_Operator(plateImg_precise, fileName)
-    plateNumber, con = lpcr_operate.Lpcr_Operator(refined)
-    color = lpcor_operate.Lpcor_Operator(img, fileName)
+    plateImg_whole, plateImg_general, plateImg_precise, plateLocateConf = lpl_operate.Lpl_Operator(img, fileName)
+    refinedChars, plateOcrScore = ocr_operate.Ocr_Operator(plateImg_precise, fileName)
+    plateStringNumber, plateRecognizeConf = lpcr_operate.Lpcr_Operator(refinedChars, plateImg_precise)
+    color = lpcor_operate.Lpcor_Operator(plateImg_precise, fileName)
 
-    print(color, name, averageConfidence)
+    print(color, plateStringNumber, plateRecognizeConf)
 
-    for i, pic in enumerate(refined):
+    for i, pic in enumerate(refinedChars):
         fullFilePath = outPath / Path('ocr', f"{i}.jpg")
         cv2.imwrite(fullFilePath.__str__(), pic)
     cv2.imwrite(plateImgWholePath.__str__(), plateImg_whole)
@@ -66,9 +66,9 @@ def ImgProcess(imgPath):
     cv2.imwrite(plateImgGeneralPath.__str__(), plateImg_general)
 
     time01 = time.time()
-    txtData.append(name + '\n')
+    txtData.append(plateStringNumber + '\n')
     txtData.append(color + '\n')
-    txtData.append(str(averageConfidence) + '\n')
+    txtData.append(str(plateRecognizeConf) + '\n')
     txtData.append(str(time01-time00) + '\n')
 
     with open(resultTxtPath.__str__(), "w+", encoding='utf-8') as f:
@@ -99,3 +99,5 @@ if arg.boolean_make_data:
     MakeData()
 if arg.boolean_img_process:
     ImgProcess(Path(arg.file))
+    pass
+ImgProcess(Path(r"/Users/lanceren/Desktop/test/4.jpg"))
