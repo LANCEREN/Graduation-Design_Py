@@ -8,7 +8,7 @@ grpcio>=1.24.3
 easydict==1.9
 tensorflow==2.2.0rc2
 setuptools>=41.0.0
-opencv-contrib-python==3.4.2.17
+opencv-contrib-python==4.2.0.32
 
 
 
